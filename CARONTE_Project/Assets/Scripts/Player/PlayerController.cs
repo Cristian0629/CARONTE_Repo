@@ -25,14 +25,14 @@ public class PlayerWaveRide : MonoBehaviour
     public float reEngageDuration = 0.18f;
 
     [Header("Smooth fall cancel (no brusco)")]
-    public float fallCancelTo = -0.6f;     // más cerca de 0 = menos “recorrido” hacia abajo
-    public float fallCancelRate = 120f;    // frena más rápido
+    public float fallCancelTo = -0.6f;     
+    public float fallCancelRate = 120f;    
     public float fallCancelTime = 0.20f;
 
     [Header("Re-engage kick (makes it rise sooner, still smooth)")]
-    public float reEngageKickUpSpeed = 1.8f;   // objetivo de velocidad hacia arriba al reenganchar
-    public float reEngageKickRate = 55f;       // qué tan rápido llega a ese objetivo (más = más rápido)
-    public float reEngageKickTime = 0.14f;     // duración del “kick”
+    public float reEngageKickUpSpeed = 1.8f;   
+    public float reEngageKickRate = 55f;       
+    public float reEngageKickTime = 0.14f;     
 
     private Rigidbody2D rb;
     private bool wasHolding;
@@ -46,7 +46,7 @@ public class PlayerWaveRide : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.freezeRotation = true;
         rb.gravityScale = gravityScale;
-        rb.linearDamping = 0f; // Unity 6 friendly
+        rb.linearDamping = 0f; 
     }
 
     void FixedUpdate()
@@ -54,7 +54,7 @@ public class PlayerWaveRide : MonoBehaviour
         bool holding = Input.GetKey(KeyCode.Space);
         bool grounded = IsGrounded();
 
-        // Detectar re-pulsado
+        
         if (holding && !wasHolding)
         {
             if (!grounded)
@@ -62,7 +62,7 @@ public class PlayerWaveRide : MonoBehaviour
                 fallCancelTimer = fallCancelTime;
                 reEngageTimer = reEngageDuration;
 
-                // Activamos el “kick” para que pase a subida antes (sin latigazo)
+                
                 kickTimer = reEngageKickTime;
             }
             else
@@ -71,7 +71,7 @@ public class PlayerWaveRide : MonoBehaviour
             }
         }
 
-        // Freno suave de caída al reenganchar
+        
         if (fallCancelTimer > 0f)
         {
             if (rb.linearVelocity.y < fallCancelTo)
@@ -82,7 +82,7 @@ public class PlayerWaveRide : MonoBehaviour
             fallCancelTimer -= Time.fixedDeltaTime;
         }
 
-        // Kick suave hacia subida (la clave de tu problema)
+        
         if (kickTimer > 0f)
         {
             float newY = Mathf.MoveTowards(rb.linearVelocity.y, reEngageKickUpSpeed, reEngageKickRate * Time.fixedDeltaTime);
@@ -90,7 +90,7 @@ public class PlayerWaveRide : MonoBehaviour
             kickTimer -= Time.fixedDeltaTime;
         }
 
-        // Empuje mientras mantienes
+        
         if (holding)
         {
             float accel = liftAcceleration;
@@ -121,7 +121,7 @@ public class PlayerWaveRide : MonoBehaviour
             kickTimer = 0f;
         }
 
-        // Límite de caída
+        
         if (rb.linearVelocity.y < -maxDownSpeed)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -maxDownSpeed);
 
