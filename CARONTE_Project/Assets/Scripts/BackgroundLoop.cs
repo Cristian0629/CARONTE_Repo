@@ -6,7 +6,7 @@ public class BackgroundLoop : MonoBehaviour
 
     void Update()
     {
-        float speed = (GameSpeed.Instance != null) ? GameSpeed.Instance.CurrentSpeed : 4f;
+        float speed = (GameSpeed_BG.Instance != null) ? GameSpeed_BG.Instance.CurrentSpeed : 4f;
 
         transform.Translate(Vector3.left * speed * Time.deltaTime);
 
@@ -16,4 +16,3 @@ public class BackgroundLoop : MonoBehaviour
         }
     }
 }
-
