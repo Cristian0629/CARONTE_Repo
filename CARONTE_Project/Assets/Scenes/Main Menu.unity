@@ -531,10 +531,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
   gameSceneName: CARONTE_Scene
   extrasSceneName: Extras
-  playFadeOut: 1
+  mainMenuSceneName: Main Menu
+  playFadeOut: 1.2
   playFadeIn: 0.6
-  extrasFadeOut: 0.35
-  extrasFadeIn: 0.25
+  extrasFadeOut: 1.2
+  extrasFadeIn: 0.6
 --- !u!4 &250433569
 Transform:
   m_ObjectHideFlags: 0
@@ -863,7 +864,7 @@ RectTransform:
   m_GameObject: {fileID: 820465719}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.0707, y: 1.0707, z: 1.0707}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 630586563}
@@ -1172,6 +1173,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneFader
   canvasGroup: {fileID: 820465720}
+  defaultFadeIn: 1.7
+  defaultFadeOut: 1.7
+  gameplaySceneName: CARONTE_Scene
+  holdBlackUntilAnyInput: 1
+  mainMenuSceneName: MainMenu
+  mainMenuStartupFadeIn: 2
+  doMainMenuStartupFade: 1
 --- !u!4 &1020911707
 Transform:
   m_ObjectHideFlags: 0

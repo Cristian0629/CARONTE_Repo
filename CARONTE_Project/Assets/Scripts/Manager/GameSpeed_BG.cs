@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameSpeed_BG : MonoBehaviour
 {
@@ -23,7 +23,7 @@ public class GameSpeed_BG : MonoBehaviour
 
     public float Difficulty01 { get; private set; }  // 0..1
 
-    private float t; // 0..1
+    private float t; // 0..1 (progreso de dificultad)
 
     void Awake()
     {
@@ -37,16 +37,36 @@ public class GameSpeed_BG : MonoBehaviour
         t += Time.deltaTime / Mathf.Max(0.01f, timeToMaxSeconds);
         Difficulty01 = Mathf.Clamp01(t);
 
-        float curveT = difficultyCurve.Evaluate(Mathf.Clamp01(t));
+        float curveT = difficultyCurve.Evaluate(Difficulty01);
         CurrentSpeed = Mathf.Lerp(startSpeed, maxSpeed, curveT);
 
         debugCurrentSpeed = CurrentSpeed;
-
     }
 
     public void ResetSpeed()
     {
         t = 0f;
         CurrentSpeed = startSpeed;
+        Difficulty01 = 0f;
+    }
+
+    // ✅ Baja la velocidad actual "en seco" (sin cambiar tus parámetros base)
+    public void ReduceSpeed(float amount)
+    {
+        CurrentSpeed = Mathf.Max(startSpeed, CurrentSpeed - Mathf.Abs(amount));
+        debugCurrentSpeed = CurrentSpeed;
+    }
+
+    // ✅ Rebobina la dificultad como si hubieran pasado X segundos menos
+    public void RewindDifficultySeconds(float seconds)
+    {
+        float delta = Mathf.Abs(seconds) / Mathf.Max(0.01f, timeToMaxSeconds);
+        t = Mathf.Clamp01(t - delta);
+        Difficulty01 = Mathf.Clamp01(t);
+
+        // recalcular para que se note al instante
+        float curveT = difficultyCurve.Evaluate(Difficulty01);
+        CurrentSpeed = Mathf.Lerp(startSpeed, maxSpeed, curveT);
+        debugCurrentSpeed = CurrentSpeed;
     }
 }
