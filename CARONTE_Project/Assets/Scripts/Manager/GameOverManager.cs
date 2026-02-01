@@ -17,6 +17,9 @@ public class GameOverManager : MonoBehaviour
     [SerializeField] private PlayerWaveRide playerController; // tu script de control del player (opcional)
     [SerializeField] private Rigidbody2D playerRb;            // opcional
 
+    // ✅ NUEVO: referencia al script que detecta golpes (para resetear el "dead")
+    [SerializeField] private PlayerHit playerHit;
+
     [Header("Stop systems")]
     [SerializeField] private MonoBehaviour[] spawnersToStop; // ObstacleSpawnerPatterns, coin spawner, etc.
 
@@ -33,7 +36,14 @@ public class GameOverManager : MonoBehaviour
     [SerializeField] private bool debugLogs = false;
 
     private bool shown;
-    private bool usedExtraLife;
+
+    [Header("Extra Lives (for coins later)")]
+    [SerializeField] private int extraLivesAvailable = 1; // por ahora 1, luego lo compras con monedas
+    private bool isReviving; // evita doble click mientras revive
+
+
+    // ✅ para que PauseMenu pueda bloquearse si el GameOver está activo
+    public bool IsGameOverShown => shown;
 
     private void Awake()
     {
@@ -49,7 +59,6 @@ public class GameOverManager : MonoBehaviour
 
     private void AutoSetupPlayerRefs()
     {
-        // Si no está asignado, intenta encontrar por Tag "Player"
         if (player == null)
         {
             var p = GameObject.FindGameObjectWithTag("Player");
@@ -60,16 +69,19 @@ public class GameOverManager : MonoBehaviour
         {
             if (playerController == null) playerController = player.GetComponent<PlayerWaveRide>();
             if (playerRb == null) playerRb = player.GetComponent<Rigidbody2D>();
+
+            // ✅ NUEVO: engancha PlayerHit automáticamente
+            if (playerHit == null) playerHit = player.GetComponent<PlayerHit>();
         }
 
         if (debugLogs)
         {
             Debug.Log($"[GameOverManager] player={(player ? player.name : "NULL")} " +
-                      $"controller={(playerController ? "OK" : "NULL")} rb={(playerRb ? "OK" : "NULL")}");
+                      $"controller={(playerController ? "OK" : "NULL")} rb={(playerRb ? "OK" : "NULL")} " +
+                      $"playerHit={(playerHit ? "OK" : "NULL")}");
         }
     }
 
-    // Llama esto desde tu detector de obstáculos (PlayerHit, etc.)
     public void GameOver()
     {
         ShowGameOver();
@@ -82,43 +94,42 @@ public class GameOverManager : MonoBehaviour
 
         if (debugLogs) Debug.Log("[GameOverManager] SHOW GAME OVER");
 
-        // Congelar TODO el juego
+        // ✅ Cierra el menú de pausa si estaba abierto para que no se superponga
+        var pause = FindFirstObjectByType<PauseMenu>();
+        if (pause != null) pause.ForceClose();
+
         if (freezeWholeGame)
             Time.timeScale = 0f;
 
-        // parar spawners (opcional; si Time.timeScale=0 ya se paran solos, pero no molesta)
         if (spawnersToStop != null)
         {
             foreach (var s in spawnersToStop)
                 if (s != null) s.enabled = false;
         }
 
-        // parar player (si NO congelas el juego entero, esto es necesario)
-        // si sí congelas todo, también lo dejamos por seguridad (no molesta)
         StopPlayerCompletely();
 
-        // mostrar UI
         if (gameOverGroup != null)
         {
             gameOverGroup.alpha = 1f;
             gameOverGroup.interactable = true;
             gameOverGroup.blocksRaycasts = true;
+
+            if (debugLogs) Debug.Log("GAME OVER UI ACTIVADA");
         }
     }
 
     private void StopPlayerCompletely()
     {
-        // Por si se instanció un player nuevo y los refs quedaron viejos
         if (player == null || (playerController == null && playerRb == null))
             AutoSetupPlayerRefs();
 
-        // Desactivar control
         if (playerController != null)
             playerController.enabled = false;
 
-        // Congelar físico completamente (por si freezeWholeGame está false o por seguridad)
         if (playerRb != null)
         {
+            // Si te da error en tu Unity, cambia linearVelocity por velocity
             playerRb.linearVelocity = Vector2.zero;
             playerRb.angularVelocity = 0f;
             playerRb.simulated = false;
@@ -139,58 +150,84 @@ public class GameOverManager : MonoBehaviour
 
     public void Replay()
     {
-        // Reanudar tiempo SIEMPRE antes de recargar
-        Time.timeScale = 1f;
+        Time.timeScale = 0f;
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        var scene = SceneManager.GetActiveScene().name;
+
+        if (SceneFader.Instance != null)
+            SceneFader.Instance.FadeToScene(scene, 0.6f, 0.3f);
+        else
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(scene);
+        }
     }
 
     public void MainMenu()
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(mainMenuSceneName);
+        Time.timeScale = 0f;
+
+        if (SceneFader.Instance != null)
+            SceneFader.Instance.FadeToScene(mainMenuSceneName, 1.0f, 0.5f);
+        else
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(mainMenuSceneName);
+        }
     }
 
     public void ExtraLife()
     {
         if (!allowExtraLife) return;
-        if (usedExtraLife) return; // solo 1 uso
-        usedExtraLife = true;
+        if (!shown) return;                 // solo cuando estás en game over
+        if (isReviving) return;             // evita spam del botón
+        if (extraLivesAvailable <= 0) return;
+
+        extraLivesAvailable--;
+        isReviving = true;
 
         StartCoroutine(ExtraLifeRoutine());
     }
+
 
     private IEnumerator ExtraLifeRoutine()
     {
         if (debugLogs) Debug.Log("[GameOverManager] EXTRA LIFE");
 
-        // Reanudar el juego (si estaba congelado)
         Time.timeScale = 1f;
 
         Hide();
 
-        // limpiar obstáculos cercanos
+        // ✅ Borra TODOS los obstáculos antes de continuar
         ClearNearbyObstacles();
 
-        // bajar velocidad + rebobinar un poco la dificultad/tiempo
         if (GameSpeed_BG.Instance != null)
         {
             GameSpeed_BG.Instance.ReduceSpeed(slowDownAmount);
             GameSpeed_BG.Instance.RewindDifficultySeconds(difficultyBackSeconds);
         }
 
-        // reactivar spawners
         if (spawnersToStop != null)
         {
             foreach (var s in spawnersToStop)
                 if (s != null) s.enabled = true;
         }
 
-        // reactivar player
         ResumePlayerCompletely();
 
+        // ✅ NUEVO: quita la "invencibilidad" (reset del flag dead del PlayerHit)
+        if (playerHit == null) AutoSetupPlayerRefs();
+        if (playerHit != null)
+            playerHit.ResetDeath();
+
         shown = false;
+        isReviving = false;
         yield return null;
+    }
+
+    public void AddExtraLife(int amount = 1)
+    {
+        extraLivesAvailable += Mathf.Max(0, amount);
     }
 
     private void Hide()
@@ -203,13 +240,9 @@ public class GameOverManager : MonoBehaviour
 
     private void ClearNearbyObstacles()
     {
-        if (player == null) return;
-
+        // ✅ Borra TODOS los obstáculos (no solo cerca)
         var obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
         foreach (var o in obstacles)
-        {
-            float d = Vector2.Distance(o.transform.position, player.position);
-            if (d <= clearRadius) Destroy(o);
-        }
+            Destroy(o);
     }
 }

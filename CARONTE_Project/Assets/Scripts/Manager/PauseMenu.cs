@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,11 +19,15 @@ public class PauseMenu : MonoBehaviour
     {
         if (pausePanel != null) pausePanel.SetActive(false);
         Time.timeScale = 1f;
-        Time.fixedDeltaTime = 0.02f; // valor normal de f�sica
+        Time.fixedDeltaTime = 0.02f;
     }
 
     private void Update()
     {
+        // ✅ NUEVO: Si está el Game Over, bloquea por completo el pause
+        if (GameOverManager.Instance != null && GameOverManager.Instance.IsGameOverShown)
+            return;
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (!isPaused) Pause();
@@ -70,8 +74,6 @@ public class PauseMenu : MonoBehaviour
             t += Time.unscaledDeltaTime;
 
             float progress = Mathf.Clamp01(t / slowMoDurationRealtime);
-
-            // Curva suave para que acelere progresivamente
             float eased = Mathf.SmoothStep(0f, 1f, progress);
 
             Time.timeScale = Mathf.Lerp(startScale, endScale, eased);
@@ -106,5 +108,20 @@ public class PauseMenu : MonoBehaviour
             SceneFader.Instance.FadeToScene(mainMenuSceneName, 1.0f, 0.5f);
         else
             SceneManager.LoadScene(mainMenuSceneName);
+    }
+
+    // ✅ NUEVO: llamado por GameOverManager para cerrar el pause si estaba abierto
+    public void ForceClose()
+    {
+        if (resumeRoutine != null)
+        {
+            StopCoroutine(resumeRoutine);
+            resumeRoutine = null;
+        }
+
+        isPaused = false;
+
+        if (pausePanel != null)
+            pausePanel.SetActive(false);
     }
 }
