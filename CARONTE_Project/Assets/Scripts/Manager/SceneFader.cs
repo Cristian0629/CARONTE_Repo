@@ -102,6 +102,29 @@ public class SceneFader : MonoBehaviour
         currentRoutine = StartCoroutine(FadeAndSwitch(sceneName, fadeOutTime, fadeInTime));
     }
 
+    public void MainMenu()
+    {
+        Time.timeScale = 1f;
+
+        // Black fade usando tu SceneFader
+        if (SceneFader.Instance != null)
+            SceneFader.Instance.FadeToScene(mainMenuSceneName, 0.35f, 1.2f);
+        else
+            SceneManager.LoadScene(mainMenuSceneName);
+    }
+
+    public void Restart()
+    {
+        Time.timeScale = 1f;
+
+        var scene = SceneManager.GetActiveScene().name;
+
+        if (SceneFader.Instance != null)
+            SceneFader.Instance.FadeToScene(scene, 0.35f, 0.35f);
+        else
+            SceneManager.LoadScene(scene);
+    }
+
     public void FadeAndQuit(float fadeOutTime)
     {
         if (currentRoutine != null) StopCoroutine(currentRoutine);
