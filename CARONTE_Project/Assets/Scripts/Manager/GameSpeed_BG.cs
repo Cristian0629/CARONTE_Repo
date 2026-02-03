@@ -21,9 +21,9 @@ public class GameSpeed_BG : MonoBehaviour
     public float CurrentSpeed { get; private set; }
     [SerializeField] private float debugCurrentSpeed;
 
-    public float Difficulty01 { get; private set; }  // 0..1
+    public float Difficulty01 { get; private set; }  
 
-    private float t; // 0..1 (progreso de dificultad)
+    private float t; 
 
     void Awake()
     {
@@ -50,21 +50,21 @@ public class GameSpeed_BG : MonoBehaviour
         Difficulty01 = 0f;
     }
 
-    // ✅ Baja la velocidad actual "en seco" (sin cambiar tus parámetros base)
+    
     public void ReduceSpeed(float amount)
     {
         CurrentSpeed = Mathf.Max(startSpeed, CurrentSpeed - Mathf.Abs(amount));
         debugCurrentSpeed = CurrentSpeed;
     }
 
-    // ✅ Rebobina la dificultad como si hubieran pasado X segundos menos
+    
     public void RewindDifficultySeconds(float seconds)
     {
         float delta = Mathf.Abs(seconds) / Mathf.Max(0.01f, timeToMaxSeconds);
         t = Mathf.Clamp01(t - delta);
         Difficulty01 = Mathf.Clamp01(t);
 
-        // recalcular para que se note al instante
+        
         float curveT = difficultyCurve.Evaluate(Difficulty01);
         CurrentSpeed = Mathf.Lerp(startSpeed, maxSpeed, curveT);
         debugCurrentSpeed = CurrentSpeed;

@@ -6,7 +6,7 @@ public class PlayerHit : MonoBehaviour
 
     private bool dead;
 
-    // ✅ NUEVO: para que al usar +1 Life puedas volver a morir
+    
     public void ResetDeath()
     {
         dead = false;

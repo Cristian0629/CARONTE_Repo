@@ -24,7 +24,7 @@ public class PauseMenu : MonoBehaviour
 
     private void Update()
     {
-        // ✅ NUEVO: Si está el Game Over, bloquea por completo el pause
+        
         if (GameOverManager.Instance != null && GameOverManager.Instance.IsGameOverShown)
             return;
 
@@ -110,7 +110,7 @@ public class PauseMenu : MonoBehaviour
             SceneManager.LoadScene(mainMenuSceneName);
     }
 
-    // ✅ NUEVO: llamado por GameOverManager para cerrar el pause si estaba abierto
+    
     public void ForceClose()
     {
         if (resumeRoutine != null)

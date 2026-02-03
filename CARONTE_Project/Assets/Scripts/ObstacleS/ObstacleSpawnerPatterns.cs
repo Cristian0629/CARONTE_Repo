@@ -138,10 +138,10 @@ public class ObstacleSpawnerPatterns : MonoBehaviour
 
         if (timer <= 0f)
         {
-            // ✅ CAP: si ya hay demasiados obstáculos en cámara, no spawneamos todavía
+            
             if (!CanSpawnMore(1))
             {
-                // corta cualquier cluster activo (si no, se acumula)
+                
                 clusterRemaining = 0;
                 timer = Mathf.Max(minTimeBetweenSpawns, fullScreenRetryDelay);
                 return;
@@ -153,7 +153,7 @@ public class ObstacleSpawnerPatterns : MonoBehaviour
 
     bool CanSpawnMore(int amountToAdd)
     {
-        if (maxObstaclesInCamera <= 0) return true; // por si lo pones a 0
+        if (maxObstaclesInCamera <= 0) return true; 
         int current = CountObstaclesInCamera();
         return (current + amountToAdd) <= maxObstaclesInCamera;
     }
@@ -208,7 +208,7 @@ public class ObstacleSpawnerPatterns : MonoBehaviour
     {
         float stairChance = Mathf.Lerp(stairChanceEasy, stairChanceHard, d);
 
-        // ✅ Si no caben al menos 3, no intentamos escalera (porque se ve rara recortada)
+        
         if (Random.value < stairChance && CanSpawnMore(3))
         {
             SpawnStair(d, factor, scrollSpeed);
@@ -218,7 +218,7 @@ public class ObstacleSpawnerPatterns : MonoBehaviour
         // --- CLUSTER / SINGLE ---
         if (clusterRemaining > 0)
         {
-            // si no cabe 1 más, paramos el cluster
+            
             if (!CanSpawnMore(1))
             {
                 clusterRemaining = 0;
@@ -226,7 +226,7 @@ public class ObstacleSpawnerPatterns : MonoBehaviour
                 return;
             }
 
-            // Círculo solo si caben 4
+            
             if (circleCooldownTimer <= 0f && clusterRemaining >= 3 && CanSpawnMore(4))
             {
                 float circleChance = Mathf.Lerp(circleChanceEasy, circleChanceHard, d);
@@ -259,7 +259,7 @@ public class ObstacleSpawnerPatterns : MonoBehaviour
             return;
         }
 
-        // SINGLE normal (solo si cabe)
+        
         if (!CanSpawnMore(1))
         {
             timer = Mathf.Max(minTimeBetweenSpawns, fullScreenRetryDelay);
@@ -275,7 +275,7 @@ public class ObstacleSpawnerPatterns : MonoBehaviour
             {
                 int count = Random.Range(clusterMinCount, clusterMaxCount + 1);
 
-                // ✅ Si no caben tantos, limitamos el cluster a lo que quepa
+                
                 int current = CountObstaclesInCamera();
                 int room = Mathf.Max(0, maxObstaclesInCamera - current);
                 count = Mathf.Clamp(count, 1, Mathf.Max(1, room));
@@ -368,7 +368,7 @@ public class ObstacleSpawnerPatterns : MonoBehaviour
 
     void SpawnCircle4(float d, float scrollSpeed)
     {
-        // ✅ Solo si caben 4
+        
         if (!CanSpawnMore(4))
         {
             timer = Mathf.Max(minTimeBetweenSpawns, fullScreenRetryDelay);
@@ -406,15 +406,15 @@ public class ObstacleSpawnerPatterns : MonoBehaviour
 
     void SpawnStair(float d, float factor, float scrollSpeed)
     {
-        // Calculamos steps primero para poder chequear cupo
+        
         int steps = Random.Range(stairMinSteps, stairMaxSteps + 1);
 
-        // ✅ Si no caben esos steps, reducimos steps a lo que quepa (mínimo 3 para que siga siendo “escalera”)
+        
         int current = CountObstaclesInCamera();
         int room = Mathf.Max(0, maxObstaclesInCamera - current);
         steps = Mathf.Clamp(steps, 3, Mathf.Max(3, room));
 
-        // Si aun así no cabe, no spawneamos
+        
         if (!CanSpawnMore(steps))
         {
             timer = Mathf.Max(minTimeBetweenSpawns, fullScreenRetryDelay);

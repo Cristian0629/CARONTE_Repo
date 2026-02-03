@@ -20,7 +20,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private DialogueLine[] introLines;
 
     [Header("Player lock")]
-    [SerializeField] private PlayerWaveRide playerController; // arrastra tu Player aquí
+    [SerializeField] private PlayerWaveRide playerController; 
 
     private DialogueLine[] lines;
     private int index;
@@ -56,7 +56,7 @@ public class DialogueManager : MonoBehaviour
         lines = newLines;
         index = 0;
 
-        // Bloquea control del player
+        
         if (playerController != null)
             playerController.enabled = false;
 
@@ -126,7 +126,7 @@ public class DialogueManager : MonoBehaviour
         nameText.text = "";
         portraitImage.sprite = null;
 
-        // Reactiva control del player
+        
         if (playerController != null)
             playerController.enabled = true;
     }

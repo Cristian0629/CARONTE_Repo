@@ -14,14 +14,14 @@ public class GameOverManager : MonoBehaviour
 
     [Header("Player (auto si lo dejas vacío)")]
     [SerializeField] private Transform player;
-    [SerializeField] private PlayerWaveRide playerController; // tu script de control del player (opcional)
-    [SerializeField] private Rigidbody2D playerRb;            // opcional
+    [SerializeField] private PlayerWaveRide playerController; 
+    [SerializeField] private Rigidbody2D playerRb;            
 
-    // ✅ NUEVO: referencia al script que detecta golpes (para resetear el "dead")
+   
     [SerializeField] private PlayerHit playerHit;
 
     [Header("Stop systems")]
-    [SerializeField] private MonoBehaviour[] spawnersToStop; // ObstacleSpawnerPatterns, coin spawner, etc.
+    [SerializeField] private MonoBehaviour[] spawnersToStop; 
 
     [Header("Extra Life")]
     [SerializeField] private bool allowExtraLife = true;
@@ -38,11 +38,11 @@ public class GameOverManager : MonoBehaviour
     private bool shown;
 
     [Header("Extra Lives (for coins later)")]
-    [SerializeField] private int extraLivesAvailable = 1; // por ahora 1, luego lo compras con monedas
-    private bool isReviving; // evita doble click mientras revive
+    [SerializeField] private int extraLivesAvailable = 1; 
+    private bool isReviving; 
 
 
-    // ✅ para que PauseMenu pueda bloquearse si el GameOver está activo
+    
     public bool IsGameOverShown => shown;
 
     private void Awake()
@@ -50,7 +50,7 @@ public class GameOverManager : MonoBehaviour
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
 
-        // Seguridad por si vienes de una escena pausada
+        
         Time.timeScale = 1f;
 
         AutoSetupPlayerRefs();
@@ -70,7 +70,7 @@ public class GameOverManager : MonoBehaviour
             if (playerController == null) playerController = player.GetComponent<PlayerWaveRide>();
             if (playerRb == null) playerRb = player.GetComponent<Rigidbody2D>();
 
-            // ✅ NUEVO: engancha PlayerHit automáticamente
+            
             if (playerHit == null) playerHit = player.GetComponent<PlayerHit>();
         }
 
@@ -94,7 +94,7 @@ public class GameOverManager : MonoBehaviour
 
         if (debugLogs) Debug.Log("[GameOverManager] SHOW GAME OVER");
 
-        // ✅ Cierra el menú de pausa si estaba abierto para que no se superponga
+        
         var pause = FindFirstObjectByType<PauseMenu>();
         if (pause != null) pause.ForceClose();
 
@@ -129,7 +129,7 @@ public class GameOverManager : MonoBehaviour
 
         if (playerRb != null)
         {
-            // Si te da error en tu Unity, cambia linearVelocity por velocity
+            
             playerRb.linearVelocity = Vector2.zero;
             playerRb.angularVelocity = 0f;
             playerRb.simulated = false;
@@ -179,8 +179,8 @@ public class GameOverManager : MonoBehaviour
     public void ExtraLife()
     {
         if (!allowExtraLife) return;
-        if (!shown) return;                 // solo cuando estás en game over
-        if (isReviving) return;             // evita spam del botón
+        if (!shown) return;                 
+        if (isReviving) return;             
         if (extraLivesAvailable <= 0) return;
 
         extraLivesAvailable--;
@@ -198,7 +198,7 @@ public class GameOverManager : MonoBehaviour
 
         Hide();
 
-        // ✅ Borra TODOS los obstáculos antes de continuar
+        
         ClearNearbyObstacles();
 
         if (GameSpeed_BG.Instance != null)
@@ -215,7 +215,7 @@ public class GameOverManager : MonoBehaviour
 
         ResumePlayerCompletely();
 
-        // ✅ NUEVO: quita la "invencibilidad" (reset del flag dead del PlayerHit)
+        
         if (playerHit == null) AutoSetupPlayerRefs();
         if (playerHit != null)
             playerHit.ResetDeath();
@@ -240,7 +240,7 @@ public class GameOverManager : MonoBehaviour
 
     private void ClearNearbyObstacles()
     {
-        // ✅ Borra TODOS los obstáculos (no solo cerca)
+        
         var obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
         foreach (var o in obstacles)
             Destroy(o);

@@ -25,8 +25,7 @@ public class SceneFader : MonoBehaviour
     private bool didMainMenuStartupFade = false;
     private Coroutine currentRoutine;
 
-    // ✅ NUEVO: tiempo de fade-in preparado para la siguiente escena
-    // (-1 = usar defaultFadeIn)
+    
     private float nextSceneFadeInTime = -1f;
 
     private void Awake()
@@ -53,14 +52,14 @@ public class SceneFader : MonoBehaviour
     {
         if (currentRoutine != null) StopCoroutine(currentRoutine);
 
-        // por si vienes del gameplay (que pudo estar pausado)
+        
         Time.timeScale = 1f;
 
-        // asegúrate de empezar tapando
+        
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
-        // 1) Fade lento SOLO al iniciar por primera vez en el main menu
+        
         if (doMainMenuStartupFade && !didMainMenuStartupFade && scene.name == mainMenuSceneName)
         {
             didMainMenuStartupFade = true;
@@ -68,16 +67,16 @@ public class SceneFader : MonoBehaviour
             return;
         }
 
-        // 2) Gameplay: negro hasta pulsar
+        
         if (holdBlackUntilAnyInput && scene.name == gameplaySceneName)
         {
             currentRoutine = StartCoroutine(HoldBlackThenFadeIn(defaultFadeIn));
             return;
         }
 
-        // 3) Resto: fade normal, o el fade-in que venga preparado por FadeToScene (Extras, Play, etc.)
+        
         float fadeInToUse = (nextSceneFadeInTime > 0f) ? nextSceneFadeInTime : defaultFadeIn;
-        nextSceneFadeInTime = -1f; // reset para que no afecte a futuras escenas
+        nextSceneFadeInTime = -1f; 
 
         currentRoutine = StartCoroutine(FadeIn(fadeInToUse));
     }
@@ -106,7 +105,7 @@ public class SceneFader : MonoBehaviour
     {
         Time.timeScale = 1f;
 
-        // Black fade usando tu SceneFader
+        
         if (SceneFader.Instance != null)
             SceneFader.Instance.FadeToScene(mainMenuSceneName, 0.35f, 1.2f);
         else
@@ -141,12 +140,12 @@ public class SceneFader : MonoBehaviour
 #endif
     }
 
-    // ✅ CAMBIADO: guardamos fadeInTime para la siguiente escena SIN tocar defaultFadeIn
+    
     private IEnumerator FadeAndSwitch(string sceneName, float fadeOutTime, float fadeInTime)
     {
         yield return StartCoroutine(FadeOut(fadeOutTime));
 
-        // El fade-in que se usará al cargar la siguiente escena (por ejemplo Extras)
+        
         nextSceneFadeInTime = fadeInTime;
 
         SceneManager.LoadScene(sceneName);

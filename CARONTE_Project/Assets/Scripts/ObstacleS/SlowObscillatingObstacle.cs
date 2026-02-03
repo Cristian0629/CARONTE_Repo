@@ -47,7 +47,7 @@ public class SlowOscillatingObstacle : MonoBehaviour
         startY = transform.position.y;
         phase = Random.Range(0f, Mathf.PI * 2f);
 
-        // ✅ Al aparecer, si ya hay 2 en cámara, este se destruye
+        
         if (maxInCamera > 0 && CountSameTypeInCamera() >= maxInCamera)
         {
             Destroy(gameObject);
@@ -59,22 +59,22 @@ public class SlowOscillatingObstacle : MonoBehaviour
 
     void Update()
     {
-        // 1) Mover a la izquierda a velocidad propia (más rápido horizontalmente)
+        
         float speed = leftSpeed * leftSpeedMultiplier;
         transform.position += Vector3.left * (speed * Time.deltaTime);
 
-        // 2) Oscilar arriba/abajo (sin aumentar la dificultad vertical)
+       
         float y = startY + Mathf.Sin((Time.time * frequency * Mathf.PI * 2f) + phase) * amplitude;
         transform.position = new Vector3(transform.position.x, y, transform.position.z);
 
-        // 3) Destruir al salir
+        
         if (destroyOffscreen && transform.position.x < destroyX)
         {
             Destroy(gameObject);
             return;
         }
 
-        // ✅ Comprobación periódica del cap: si sobran, este se auto-destruye
+        
         if (maxInCamera > 0 && Time.time >= nextCapCheckTime)
         {
             nextCapCheckTime = Time.time + capCheckInterval;
@@ -114,7 +114,7 @@ public class SlowOscillatingObstacle : MonoBehaviour
         return count;
     }
 
-    // --- Matar al jugador igual que un obstáculo normal ---
+    
     void OnTriggerEnter2D(Collider2D other)
     {
         TryKill(other.gameObject);

@@ -27,13 +27,13 @@ public class MainMenuController : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
-        // mismo fade que Extras (rápido)
+        
         SceneFader.Instance.FadeToScene(mainMenuSceneName, extrasFadeOut, extrasFadeIn);
     }
 
 
     public void ExitGame()
     {
-        SceneFader.Instance.FadeAndQuit(extrasFadeOut); // mismo que Extras (rápido)
+        SceneFader.Instance.FadeAndQuit(extrasFadeOut); 
     }
 }

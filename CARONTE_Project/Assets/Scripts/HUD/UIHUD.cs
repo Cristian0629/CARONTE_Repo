@@ -16,7 +16,7 @@ public class UIHUD : MonoBehaviour
 
     [Header("If your player doesn't move in X (world scrolls)")]
     [SerializeField] private bool useSpeedBasedMeters = true;
-    [SerializeField] private float worldSpeed = 5f; // pon aquí tu velocidad de scroll
+    [SerializeField] private float worldSpeed = 5f; 
 
     private float startX;
     private float metersAccum;
@@ -45,7 +45,7 @@ public class UIHUD : MonoBehaviour
 
         if (useSpeedBasedMeters)
         {
-            // Para juegos tipo Jetpack/runner donde el mundo se mueve y el player casi no avanza en X
+            
             float s = (GameSpeed.Instance != null) ? GameSpeed.Instance.Speed : worldSpeed;
             metersAccum += s * Time.deltaTime;
 
@@ -53,7 +53,7 @@ public class UIHUD : MonoBehaviour
         }
         else
         {
-            // Si tu player realmente avanza en X
+            
             if (player == null) return;
             meters = Mathf.Max(0f, (player.position.x - startX) * metersMultiplier);
         }
