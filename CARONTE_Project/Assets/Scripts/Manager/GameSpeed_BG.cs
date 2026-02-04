@@ -4,6 +4,9 @@ public class GameSpeed_BG : MonoBehaviour
 {
     public static GameSpeed_BG Instance;
 
+    // 🔒 Interruptor global para congelar TODO el gameplay
+    public static bool GameFrozen = true;
+
     [Header("Speed Settings")]
     public float startSpeed = 5.2f;
     public float maxSpeed = 9.5f;
@@ -21,9 +24,9 @@ public class GameSpeed_BG : MonoBehaviour
     public float CurrentSpeed { get; private set; }
     [SerializeField] private float debugCurrentSpeed;
 
-    public float Difficulty01 { get; private set; }  
+    public float Difficulty01 { get; private set; }
 
-    private float t; 
+    private float t;
 
     void Awake()
     {
@@ -34,6 +37,9 @@ public class GameSpeed_BG : MonoBehaviour
 
     void Update()
     {
+        // ❄️ Si el juego está congelado, NO avanza dificultad ni velocidad
+        if (GameFrozen) return;
+
         t += Time.deltaTime / Mathf.Max(0.01f, timeToMaxSeconds);
         Difficulty01 = Mathf.Clamp01(t);
 
@@ -48,23 +54,21 @@ public class GameSpeed_BG : MonoBehaviour
         t = 0f;
         CurrentSpeed = startSpeed;
         Difficulty01 = 0f;
+        debugCurrentSpeed = CurrentSpeed;
     }
 
-    
     public void ReduceSpeed(float amount)
     {
         CurrentSpeed = Mathf.Max(startSpeed, CurrentSpeed - Mathf.Abs(amount));
         debugCurrentSpeed = CurrentSpeed;
     }
 
-    
     public void RewindDifficultySeconds(float seconds)
     {
         float delta = Mathf.Abs(seconds) / Mathf.Max(0.01f, timeToMaxSeconds);
         t = Mathf.Clamp01(t - delta);
         Difficulty01 = Mathf.Clamp01(t);
 
-        
         float curveT = difficultyCurve.Evaluate(Difficulty01);
         CurrentSpeed = Mathf.Lerp(startSpeed, maxSpeed, curveT);
         debugCurrentSpeed = CurrentSpeed;

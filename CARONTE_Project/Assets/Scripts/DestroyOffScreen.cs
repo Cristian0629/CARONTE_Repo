@@ -12,7 +12,16 @@ public class DestroyOffscreen : MonoBehaviour
         Vector3 bottomLeft = cam.ViewportToWorldPoint(new Vector3(0f, 0f, 0f));
         float destroyX = bottomLeft.x - leftPadding;
 
-        if (transform.position.x < destroyX)
+        // Si el objeto tiene hijos (como patrones), comprobamos el hijo más a la derecha
+        float rightmostX = transform.position.x;
+
+        foreach (Transform child in transform)
+        {
+            if (child.position.x > rightmostX)
+                rightmostX = child.position.x;
+        }
+
+        if (rightmostX < destroyX)
             Destroy(gameObject);
     }
 }

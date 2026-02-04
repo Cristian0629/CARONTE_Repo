@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -20,7 +20,12 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private DialogueLine[] introLines;
 
     [Header("Player lock")]
-    [SerializeField] private PlayerWaveRide playerController; 
+    [SerializeField] private PlayerWaveRide playerController;
+
+    [Header("Start Freeze Overlay")]
+    [Tooltip("CanvasGroup de una Image negra a pantalla completa. Alpha 1 = negro, 0 = transparente.")]
+    [SerializeField] private CanvasGroup blackFade;
+    [SerializeField] private float fadeDuration = 1f;
 
     private DialogueLine[] lines;
     private int index;
@@ -30,6 +35,14 @@ public class DialogueManager : MonoBehaviour
     void Awake()
     {
         dialoguePanel.SetActive(false);
+
+        // Si existe overlay negro, asegúrate de que al iniciar está negro (opcional)
+        if (blackFade != null)
+        {
+            blackFade.alpha = 1f;
+            blackFade.blocksRaycasts = true;
+            blackFade.interactable = true;
+        }
     }
 
     void Start()
@@ -37,6 +50,12 @@ public class DialogueManager : MonoBehaviour
         if (playOnStart && introLines != null && introLines.Length > 0)
         {
             StartDialogue(introLines);
+        }
+        else
+        {
+            // Si no hay diálogo de intro, asegura que el juego no queda pausado
+            Time.timeScale = 1f;
+            if (blackFade != null) blackFade.alpha = 0f;
         }
     }
 
@@ -56,11 +75,19 @@ public class DialogueManager : MonoBehaviour
         lines = newLines;
         index = 0;
 
-        
+        // ❄️ Congelar TODO el juego
+        Time.timeScale = 0f;
+
+        // Bloquea jugador (por si acaso)
         if (playerController != null)
             playerController.enabled = false;
 
         dialoguePanel.SetActive(true);
+
+        // 🎬 Quitar negro al empezar el diálogo (con tiempo real)
+        if (blackFade != null)
+            StartCoroutine(FadeBlack(1f, 0f, fadeDuration));
+
         ShowLine(lines[index]);
     }
 
@@ -83,7 +110,8 @@ public class DialogueManager : MonoBehaviour
         foreach (char c in text)
         {
             bodyText.text += c;
-            yield return new WaitForSeconds(charDelay);
+            // ✅ Usa tiempo real para funcionar aunque Time.timeScale = 0
+            yield return new WaitForSecondsRealtime(charDelay);
         }
 
         isTyping = false;
@@ -121,13 +149,57 @@ public class DialogueManager : MonoBehaviour
         typingCoroutine = null;
         isTyping = false;
 
+        StartCoroutine(EndSequence());
+    }
+
+    private IEnumerator EndSequence()
+    {
+        // 🎬 Fundido a negro (tiempo real)
+        if (blackFade != null)
+            yield return StartCoroutine(FadeBlack(0f, 1f, fadeDuration));
+
+        // Cierra panel
         dialoguePanel.SetActive(false);
         bodyText.text = "";
         nameText.text = "";
         portraitImage.sprite = null;
 
-        
+        // 🚀 Reanudar juego
+        Time.timeScale = 1f;
+
         if (playerController != null)
             playerController.enabled = true;
+
+        // 🎬 Quitar negro para arrancar gameplay
+        if (blackFade != null)
+            yield return StartCoroutine(FadeBlack(1f, 0f, fadeDuration));
+    }
+
+    private IEnumerator FadeBlack(float from, float to, float duration)
+    {
+        if (blackFade == null) yield break;
+
+        blackFade.alpha = from;
+        float t = 0f;
+
+        // Mientras está negro, bloquea clicks (opcional)
+        blackFade.blocksRaycasts = true;
+        blackFade.interactable = true;
+
+        while (t < duration)
+        {
+            t += Time.unscaledDeltaTime;
+            blackFade.alpha = Mathf.Lerp(from, to, t / Mathf.Max(0.0001f, duration));
+            yield return null;
+        }
+
+        blackFade.alpha = to;
+
+        // Si ya no hay negro, deja pasar inputs/clicks (opcional)
+        if (Mathf.Approximately(to, 0f))
+        {
+            blackFade.blocksRaycasts = false;
+            blackFade.interactable = false;
+        }
     }
 }

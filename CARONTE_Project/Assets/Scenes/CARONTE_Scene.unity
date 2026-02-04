@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 34583039}
   m_Layer: 0
   m_Name: ObstacleSpawner
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -176,19 +176,33 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 34583036}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee9559edfc216664eafade9ad3151786, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleSpawner
-  obstaclePrefabs:
-  - {fileID: 6265108242457400878, guid: 825cc82b302133e48962753564d71e3c, type: 3}
-  - {fileID: 8541185088399220816, guid: 850fae791b29f1c49ba13a4e2f171353, type: 3}
-  minSpawnTime: 1
-  maxSpawnTime: 2
+  obstaclePatterns:
+  - prefab: {fileID: 0}
+    weight: 0
+  - prefab: {fileID: 7625384666358407948, guid: dcb2610b2c5fe7d42b4ce321193f8d19, type: 3}
+    weight: 1.5
+  - prefab: {fileID: 634563012260353697, guid: 118274abe1d1a044783c808adfbae18a, type: 3}
+    weight: 0.5
+  - prefab: {fileID: 5495093665025668887, guid: 50140e6ff1a4c9f45b462ddb1d8ec807, type: 3}
+    weight: 5
+  - prefab: {fileID: 4990238215048641776, guid: 36ad12615398b59419c7b35c3483ea1a, type: 3}
+    weight: 2
+  - prefab: {fileID: 8541185088399220816, guid: 850fae791b29f1c49ba13a4e2f171353, type: 3}
+    weight: 2.5
+  easyMinSpawn: 1.6
+  easyMaxSpawn: 2.2
+  hardMinSpawn: 0.55
+  hardMaxSpawn: 0.9
   rightPadding: 1.5
   topPadding: 0.8
   bottomPadding: 0.8
+  useLanes: 1
+  obstacleLanesY: []
 --- !u!4 &34583038
 Transform:
   m_ObjectHideFlags: 0
@@ -211,67 +225,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 34583036}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2039a3f888325849a77db9c6d53a7f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleSpawnerPatterns
-  obstaclePrefab: {fileID: 6265108242457400878, guid: 825cc82b302133e48962753564d71e3c, type: 3}
-  slowMovingObstaclePrefab: {fileID: 8541185088399220816, guid: 850fae791b29f1c49ba13a4e2f171353, type: 3}
-  slowMovingChance: 0.08
-  slowMovingOnlyOutsideClusters: 1
-  maxObstaclesInCamera: 5
+  obstaclePrefabs: []
+  minSpawnTime: 0.8
+  maxSpawnTime: 1.4
+  rightPadding: 1.5
+  topPadding: 0.8
+  bottomPadding: 0.8
+  resumeDelay: 2
   obstacleTag: Obstacle
-  cameraCountPaddingX: 0
-  fullScreenRetryDelay: 0.12
-  referenceScrollSpeed: 6
-  boostStartSpeed: 13
-  maxScrollSpeed: 0.9
-  maxSpawnBoost: 1.4
-  boostExponent: 4
-  midCompensation: 0.65
-  midMaxFactor: 1.45
-  minTimeBetweenSpawns: 0.05
-  spawnX: 15
-  easyMinY: -2
-  easyMaxY: 2
-  hardMinY: -3.6
-  hardMaxY: 3.6
-  easyInterval: 1.45
-  hardInterval: 0.8
-  easySingleEarly: 0.35
-  hardSingleEarly: 0.55
-  easySingleLate: 0.75
-  hardSingleLate: 1.25
-  clusterChanceEasy: 0.03
-  clusterChanceHard: 0.09
-  clusterMinCount: 2
-  clusterMaxCount: 5
-  clusterMinGap: 0.06
-  clusterMaxGap: 0.18
-  clusterCooldownEasy: 2.1
-  clusterCooldownHard: 1.2
-  recentYCount: 4
-  burstDeltaMultiplier: 1.15
-  easyMinDeltaY: 1.4
-  hardMinDeltaY: 0.6
-  circleChanceEasy: 0.35
-  circleChanceHard: 0.55
-  circleRadiusYEasy: 1.1
-  circleRadiusYHard: 0.8
-  circleRadiusX: 1
-  circleCooldownEasy: 2.2
-  circleCooldownHard: 1.2
-  stairMinSteps: 3
-  stairMaxSteps: 4
-  stairStepHeight: 0.7
-  stairStepXSpacing: 1.1
-  stairChanceEasy: 0.02
-  stairChanceHard: 0.18
-  patternSafeMarginX: 2
-  patternExtraSilence: 0.1
-  stairCooldownEasy: 1.1
-  stairCooldownHard: 0.4
 --- !u!1 &61107267
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,62 +869,6 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 855.1393, y: 581.22705, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &306971707
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 306971709}
-  - component: {fileID: 306971708}
-  m_Layer: 0
-  m_Name: DialogueManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &306971708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 306971707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df39f14bc9d39164ea0b1c9ab7416f28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DialogueManager
-  dialoguePanel: {fileID: 104400522}
-  portraitImage: {fileID: 1957083644}
-  nameText: {fileID: 1648692889}
-  bodyText: {fileID: 455766338}
-  charDelay: 0.03
-  advanceKey: 101
-  playOnStart: 1
-  introLines:
-  - speakerName: CARONTE
-    text: Hola, me llamo Caronte.
-    portrait: {fileID: 0}
-  playerController: {fileID: 0}
---- !u!4 &306971709
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 306971707}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 197.32716, y: 194.66641, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2263,6 +2173,65 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!1 &1088902319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1088902321}
+  - component: {fileID: 1088902320}
+  m_Layer: 0
+  m_Name: CoinSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1088902320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1088902319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37b3babbdc453f44bbd38a25889f1090, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CoinPatternSpawner
+  patterns:
+  - prefab: {fileID: 930746642722446645, guid: 99dd132d05b2dec4d8c335b5f72b862b, type: 3}
+    weight: 2
+  - prefab: {fileID: 3828189623293865901, guid: 4014c99653b002a42a6b992c31afe0d1, type: 3}
+    weight: 2
+  - prefab: {fileID: 7865789057008458751, guid: 35a622bea4fbbec45bba1e40127852bd, type: 3}
+    weight: 3
+  - prefab: {fileID: 3073580705010123508, guid: c87259f30ea09da47b0e77c93714a39b, type: 3}
+    weight: 0.5
+  minSpawnTime: 1.5
+  maxSpawnTime: 2.5
+  spawnX: 12
+  minY: -2.8
+  maxY: 3.2
+  onlyOnePatternOnScreen: 1
+--- !u!4 &1088902321
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1088902319}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.97, y: 0.72, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1152932785
 GameObject:
   m_ObjectHideFlags: 0
@@ -3132,7 +3101,7 @@ GameObject:
   - component: {fileID: 1501774806}
   m_Layer: 0
   m_Name: OBSTACLES
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5132,9 +5101,9 @@ SceneRoots:
   - {fileID: 1562077199}
   - {fileID: 69880218}
   - {fileID: 1313984374}
-  - {fileID: 306971709}
   - {fileID: 1369155525}
   - {fileID: 209062119}
   - {fileID: 1501774806}
   - {fileID: 1979383384}
   - {fileID: 1414523299}
+  - {fileID: 1088902321}
