@@ -4,8 +4,7 @@ public class GameSpeed_BG : MonoBehaviour
 {
     public static GameSpeed_BG Instance;
 
-    // 🔒 Interruptor global para congelar TODO el gameplay
-    public static bool GameFrozen = true;
+    
 
     [Header("Speed Settings")]
     public float startSpeed = 5.2f;
@@ -37,8 +36,6 @@ public class GameSpeed_BG : MonoBehaviour
 
     void Update()
     {
-        // ❄️ Si el juego está congelado, NO avanza dificultad ni velocidad
-        if (GameFrozen) return;
 
         t += Time.deltaTime / Mathf.Max(0.01f, timeToMaxSeconds);
         Difficulty01 = Mathf.Clamp01(t);
