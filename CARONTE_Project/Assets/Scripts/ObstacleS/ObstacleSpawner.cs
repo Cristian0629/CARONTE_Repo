@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
 {
@@ -13,12 +14,19 @@ public class ObstacleSpawner : MonoBehaviour
     public PatternEntry[] obstaclePatterns;
 
     [Header("Timing (difficulty scaled)")]
-    public float easyMinSpawn = 1.6f;
-    public float easyMaxSpawn = 2.2f;
+    public float easyMinSpawn = 0.7f;
+    public float easyMaxSpawn = 1.1f;
 
-    public float hardMinSpawn = 0.55f;
-    public float hardMaxSpawn = 0.9f;
+    public float hardMinSpawn = 0.25f;
+    public float hardMaxSpawn = 0.45f;
 
+    [Header("Burst spawn (optional 2nd obstacle)")]
+    [Range(0f, 1f)] public float burstChance = 0.35f;
+    public float burstDelayMin = 0.15f;
+    public float burstDelayMax = 0.30f;
+
+    [Tooltip("Si usas lanes, intentará forzar que el segundo spawn salga en una lane distinta.")]
+    public bool burstForceDifferentLane = true;
 
     [Header("Camera margins")]
     public float rightPadding = 1.5f;
@@ -35,9 +43,7 @@ public class ObstacleSpawner : MonoBehaviour
     void Start() => ScheduleNext();
 
     void Update()
-
     {
-
         nextSpawn -= Time.deltaTime;
         if (nextSpawn <= 0f)
         {
@@ -60,13 +66,42 @@ public class ObstacleSpawner : MonoBehaviour
         nextSpawn = Random.Range(minT, maxT);
     }
 
-
     void Spawn()
     {
-        if (obstaclePatterns == null || obstaclePatterns.Length == 0) return;
+        // Primer obstáculo
+        if (!SpawnSingle(null)) return;
+
+        // Posible segundo obstáculo casi seguido
+        if (Random.value < burstChance)
+        {
+            float delay = Random.Range(burstDelayMin, burstDelayMax);
+            StartCoroutine(SpawnBurst(delay));
+        }
+    }
+
+    IEnumerator SpawnBurst(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // Si usamos lanes, intentamos usar una diferente para evitar “choques”
+        float? avoidLane = null;
+        if (useLanes && burstForceDifferentLane && obstacleLanesY != null && obstacleLanesY.Length > 1)
+        {
+            // “Evitar” la lane más reciente si podemos inferirla en el momento del spawn.
+            // Como aquí no guardamos la última Y, simplemente forzamos un pick distinto en SpawnSingle().
+            // (Ver parámetro avoidLaneY)
+        }
+
+        SpawnSingle(avoidLane);
+    }
+
+    // Devuelve true si spawneó
+    bool SpawnSingle(float? avoidLaneY)
+    {
+        if (obstaclePatterns == null || obstaclePatterns.Length == 0) return false;
 
         Camera cam = Camera.main;
-        if (cam == null) return;
+        if (cam == null) return false;
 
         Vector3 bl = cam.ViewportToWorldPoint(new Vector3(0f, 0f, 0f));
         Vector3 tr = cam.ViewportToWorldPoint(new Vector3(1f, 1f, 0f));
@@ -76,13 +111,13 @@ public class ObstacleSpawner : MonoBehaviour
         float bottom = bl.y + bottomPadding;
         float top = tr.y - topPadding;
 
-        float y = useLanes ? PickSafeLaneY(bottom, top) : Random.Range(bottom, top);
+        float y = useLanes ? PickSafeLaneY(bottom, top, avoidLaneY) : Random.Range(bottom, top);
 
         int idx = PickWeightedIndexNoRepeat();
-        if (idx < 0) return;
+        if (idx < 0) return false;
 
         GameObject prefab = obstaclePatterns[idx].prefab;
-        if (prefab == null) return;
+        if (prefab == null) return false;
 
         GameObject obj = Instantiate(prefab, new Vector3(spawnX, y, 0f), Quaternion.identity);
 
@@ -91,31 +126,75 @@ public class ObstacleSpawner : MonoBehaviour
         if (mover == null) mover = obj.AddComponent<ObstacleMover>();
         mover.extraSpeed = 0f;
 
-        // Se destruye cuando sale de pantalla
+        // Se destruye cuando salga de pantalla
         if (obj.GetComponent<DestroyOffscreen>() == null)
             obj.AddComponent<DestroyOffscreen>();
 
         lastIndex = idx;
+
+        // Guardamos la última Y si quieres usarla para evitar lane exacta (opcional)
+        _lastSpawnY = y;
+
+        return true;
     }
 
-    float PickSafeLaneY(float bottom, float top)
+    float _lastSpawnY = float.NaN;
+
+    float PickSafeLaneY(float bottom, float top, float? avoidLaneY)
     {
         if (obstacleLanesY == null || obstacleLanesY.Length == 0)
             return Random.Range(bottom, top);
 
-        // elige una lane que quede dentro de la “zona segura”
+        // elige lanes seguras (dentro del rango)
         int safeCount = 0;
         for (int i = 0; i < obstacleLanesY.Length; i++)
-            if (obstacleLanesY[i] >= bottom && obstacleLanesY[i] <= top) safeCount++;
+        {
+            float lane = obstacleLanesY[i];
+            if (lane < bottom || lane > top) continue;
 
+            // Si queremos evitar una lane concreta (o la última), la descartamos si hay alternativas
+            if (avoidLaneY.HasValue && Mathf.Approximately(lane, avoidLaneY.Value)) continue;
+            if (burstForceDifferentLane && !float.IsNaN(_lastSpawnY) && Mathf.Approximately(lane, _lastSpawnY))
+            {
+                // Evitar repetir la misma lane para el burst
+                continue;
+            }
+
+            safeCount++;
+        }
+
+        // Si no hay alternativas, permitimos cualquiera segura (aunque repita)
         if (safeCount == 0)
-            return Mathf.Clamp(obstacleLanesY[Random.Range(0, obstacleLanesY.Length)], bottom, top);
+        {
+            // Pick lane segura normal
+            int safeCount2 = 0;
+            for (int i = 0; i < obstacleLanesY.Length; i++)
+                if (obstacleLanesY[i] >= bottom && obstacleLanesY[i] <= top) safeCount2++;
 
+            if (safeCount2 == 0)
+                return Mathf.Clamp(obstacleLanesY[Random.Range(0, obstacleLanesY.Length)], bottom, top);
+
+            int pick2 = Random.Range(0, safeCount2);
+            for (int i = 0; i < obstacleLanesY.Length; i++)
+            {
+                if (obstacleLanesY[i] < bottom || obstacleLanesY[i] > top) continue;
+                if (pick2-- == 0) return obstacleLanesY[i];
+            }
+
+            return 0f;
+        }
+
+        // Pick lane segura evitando repeticiones
         int pick = Random.Range(0, safeCount);
         for (int i = 0; i < obstacleLanesY.Length; i++)
         {
-            if (obstacleLanesY[i] < bottom || obstacleLanesY[i] > top) continue;
-            if (pick-- == 0) return obstacleLanesY[i];
+            float lane = obstacleLanesY[i];
+            if (lane < bottom || lane > top) continue;
+
+            if (avoidLaneY.HasValue && Mathf.Approximately(lane, avoidLaneY.Value)) continue;
+            if (burstForceDifferentLane && !float.IsNaN(_lastSpawnY) && Mathf.Approximately(lane, _lastSpawnY)) continue;
+
+            if (pick-- == 0) return lane;
         }
 
         return 0f;

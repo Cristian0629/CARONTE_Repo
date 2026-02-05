@@ -1,24 +1,28 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ObstacleMover : MonoBehaviour
 {
-    public float obstacleStartSpeed = 3.8f;
-    public float obstacleMaxSpeed = 8.2f;
+    [Header("Speed relative to background")]
+    [Tooltip("Multiplicador al inicio del juego")]
+    public float startSpeedMultiplier = 0.65f;
+
+    [Tooltip("Multiplicador máximo respecto al fondo")]
+    public float maxSpeedMultiplier = 0.9f;
+
     public float extraSpeed = 0f;
 
     void Update()
     {
-        float diff = 0f;
+        if (GameSpeed_BG.Instance == null) return;
 
-        if (GameSpeed_BG.Instance != null)
-            diff = GameSpeed_BG.Instance.Difficulty01;
+        float diff = GameSpeed_BG.Instance.Difficulty01; // 0 → 1
+        float bgSpeed = GameSpeed_BG.Instance.CurrentSpeed;
 
-        float speed = Mathf.Lerp(obstacleStartSpeed, obstacleMaxSpeed, diff) + extraSpeed;
+        // Interpolamos multiplicador según dificultad
+        float multiplier = Mathf.Lerp(startSpeedMultiplier, maxSpeedMultiplier, diff);
 
-        // DEBUG: mira si esto se ejecuta
-        if (Time.frameCount % 60 == 0)
-            Debug.Log($"[ObstacleMover] {name} speed={speed:F2} diff={diff:F2}");
+        float finalSpeed = bgSpeed * multiplier + extraSpeed;
 
-        transform.position += Vector3.left * speed * Time.deltaTime;
+        transform.position += Vector3.left * finalSpeed * Time.deltaTime;
     }
 }

@@ -198,6 +198,10 @@ MonoBehaviour:
   easyMaxSpawn: 2.2
   hardMinSpawn: 0.55
   hardMaxSpawn: 0.9
+  burstChance: 0.35
+  burstDelayMin: 0.15
+  burstDelayMax: 0.3
+  burstForceDifferentLane: 1
   rightPadding: 1.5
   topPadding: 0.8
   bottomPadding: 0.8

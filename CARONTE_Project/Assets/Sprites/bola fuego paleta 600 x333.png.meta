@@ -1,0 +1,988 @@
+fileFormatVersion: 2
+guid: df81a289fc03adf4ebf3b03a1640d932
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1092641809444084739
+    second: bola fuego paleta 600 x333_0
+  - first:
+      213: 4369147097989998770
+    second: bola fuego paleta 600 x333_1
+  - first:
+      213: -616525088924019704
+    second: bola fuego paleta 600 x333_2
+  - first:
+      213: 1233264546501038659
+    second: bola fuego paleta 600 x333_3
+  - first:
+      213: 4122918936540683245
+    second: bola fuego paleta 600 x333_4
+  - first:
+      213: 753251450123595129
+    second: bola fuego paleta 600 x333_5
+  - first:
+      213: 9201968996457747198
+    second: bola fuego paleta 600 x333_6
+  - first:
+      213: -9062657062281919476
+    second: bola fuego paleta 600 x333_7
+  - first:
+      213: -8747069405968834628
+    second: bola fuego paleta 600 x333_8
+  - first:
+      213: -1673837726306818622
+    second: bola fuego paleta 600 x333_9
+  - first:
+      213: 4784009794276152410
+    second: bola fuego paleta 600 x333_10
+  - first:
+      213: 827407472409970152
+    second: bola fuego paleta 600 x333_11
+  - first:
+      213: -1123658584269271992
+    second: bola fuego paleta 600 x333_12
+  - first:
+      213: 3996869374883715637
+    second: bola fuego paleta 600 x333_13
+  - first:
+      213: 3354039569854161937
+    second: bola fuego paleta 600 x333_14
+  - first:
+      213: -2338765423373722911
+    second: bola fuego paleta 600 x333_15
+  - first:
+      213: 7885913575262941052
+    second: bola fuego paleta 600 x333_16
+  - first:
+      213: 9018341784915572762
+    second: bola fuego paleta 600 x333_17
+  - first:
+      213: 7635350226331024462
+    second: bola fuego paleta 600 x333_18
+  - first:
+      213: -3172993416251630515
+    second: bola fuego paleta 600 x333_19
+  - first:
+      213: -4705254757922563008
+    second: bola fuego paleta 600 x333_20
+  - first:
+      213: 4616052858488926549
+    second: bola fuego paleta 600 x333_21
+  - first:
+      213: 570971343829448692
+    second: bola fuego paleta 600 x333_22
+  - first:
+      213: 8158881630385098327
+    second: bola fuego paleta 600 x333_23
+  - first:
+      213: -8625192183677900692
+    second: bola fuego paleta 600 x333_24
+  - first:
+      213: 6353377656922524279
+    second: bola fuego paleta 600 x333_25
+  - first:
+      213: 7219011967050779136
+    second: bola fuego paleta 600 x333_26
+  - first:
+      213: -2808674260631812671
+    second: bola fuego paleta 600 x333_27
+  - first:
+      213: -4052771076403806839
+    second: bola fuego paleta 600 x333_28
+  - first:
+      213: 1354084798030513682
+    second: bola fuego paleta 600 x333_29
+  - first:
+      213: 4585311295202516182
+    second: bola fuego paleta 600 x333_30
+  - first:
+      213: 4911610990074864686
+    second: bola fuego paleta 600 x333_31
+  - first:
+      213: 9112935095664422747
+    second: bola fuego paleta 600 x333_32
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1071
+        width: 525
+        height: 183
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df36859301826d0f0800000000000000
+      internalID: -1092641809444084739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_1
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 1248
+        width: 48
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b86f1b032452ac30800000000000000
+      internalID: 4369147097989998770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_2
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 1097
+        width: 472
+        height: 152
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8045197b2b9a177f0800000000000000
+      internalID: -616525088924019704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_3
+      rect:
+        serializedVersion: 2
+        x: 1199
+        y: 1077
+        width: 369
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3421748229f6d1110800000000000000
+      internalID: 1233264546501038659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_4
+      rect:
+        serializedVersion: 2
+        x: 1799
+        y: 1075
+        width: 415
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: deb1d3abdec873930800000000000000
+      internalID: 4122918936540683245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_5
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 1183
+        width: 76
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97d2a27f336147a00800000000000000
+      internalID: 753251450123595129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_6
+      rect:
+        serializedVersion: 2
+        x: 1594
+        y: 1163
+        width: 86
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef295045c06f3bf70800000000000000
+      internalID: 9201968996457747198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_7
+      rect:
+        serializedVersion: 2
+        x: 1712
+        y: 1194
+        width: 42
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c044089fa69fa3280800000000000000
+      internalID: -9062657062281919476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_8
+      rect:
+        serializedVersion: 2
+        x: 2275
+        y: 1182
+        width: 58
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbf5a8f18ba2c9680800000000000000
+      internalID: -8747069405968834628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_9
+      rect:
+        serializedVersion: 2
+        x: 2188
+        y: 1148
+        width: 60
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c5a5dfc47555c8e0800000000000000
+      internalID: -1673837726306818622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_10
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1079
+        width: 74
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a54d1d5af87346240800000000000000
+      internalID: 4784009794276152410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_11
+      rect:
+        serializedVersion: 2
+        x: 1648
+        y: 1083
+        width: 51
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e5008d56ba8b7b00800000000000000
+      internalID: 827407472409970152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_12
+      rect:
+        serializedVersion: 2
+        x: 2317
+        y: 1092
+        width: 46
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84ccfc39876f760f0800000000000000
+      internalID: -1123658584269271992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_13
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 1041
+        width: 51
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53ad497258bb77730800000000000000
+      internalID: 3996869374883715637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 732
+        width: 448
+        height: 188
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 114e2c3e731fb8e20800000000000000
+      internalID: 3354039569854161937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_15
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 820
+        width: 59
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ead7de1d390b8fd0800000000000000
+      internalID: -2338765423373722911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_16
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 852
+        width: 60
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7f6af68d94607d60800000000000000
+      internalID: 7885913575262941052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_17
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 737
+        width: 459
+        height: 200
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1874f87216972d70800000000000000
+      internalID: 9018341784915572762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_18
+      rect:
+        serializedVersion: 2
+        x: 1013
+        y: 824
+        width: 51
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4cb828b39636f960800000000000000
+      internalID: 7635350226331024462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_19
+      rect:
+        serializedVersion: 2
+        x: 1128
+        y: 854
+        width: 50
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4c1ba59c4347f3d0800000000000000
+      internalID: -3172993416251630515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_20
+      rect:
+        serializedVersion: 2
+        x: 1199
+        y: 754
+        width: 480
+        height: 184
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04c1f482ab393beb0800000000000000
+      internalID: -4705254757922563008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_21
+      rect:
+        serializedVersion: 2
+        x: 1799
+        y: 747
+        width: 455
+        height: 229
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 551b8ae2e938f0040800000000000000
+      internalID: 4616052858488926549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_22
+      rect:
+        serializedVersion: 2
+        x: 2262
+        y: 848
+        width: 82
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f7b1ed796f7ce700800000000000000
+      internalID: 570971343829448692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_23
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 389
+        width: 468
+        height: 228
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75e409f7d9b2a3170800000000000000
+      internalID: 8158881630385098327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_24
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 578
+        width: 79
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c68276c38692d4880800000000000000
+      internalID: -8625192183677900692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_25
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 379
+        width: 516
+        height: 261
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77a45cc315bbb2850800000000000000
+      internalID: 6353377656922524279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_26
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 373
+        width: 511
+        height: 272
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00a0b55d2251f2460800000000000000
+      internalID: 7219011967050779136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_27
+      rect:
+        serializedVersion: 2
+        x: 1799
+        y: 357
+        width: 540
+        height: 305
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c5024514a59509d0800000000000000
+      internalID: -2808674260631812671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_28
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 500
+        width: 76
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98d39f2bd2aa1c7c0800000000000000
+      internalID: -4052771076403806839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_29
+      rect:
+        serializedVersion: 2
+        x: 1716
+        y: 481
+        width: 45
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2168d5613fcaac210800000000000000
+      internalID: 1354084798030513682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_30
+      rect:
+        serializedVersion: 2
+        x: 2309
+        y: 494
+        width: 66
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dcd127345c42af30800000000000000
+      internalID: 4585311295202516182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_31
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 30
+        width: 581
+        height: 238
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2421523c2c892440800000000000000
+      internalID: 4911610990074864686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bola fuego paleta 600 x333_32
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 260
+        width: 74
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5fa446ef26a77e70800000000000000
+      internalID: 9112935095664422747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      bola fuego paleta 600 x333_0: -1092641809444084739
+      bola fuego paleta 600 x333_1: 4369147097989998770
+      bola fuego paleta 600 x333_10: 4784009794276152410
+      bola fuego paleta 600 x333_11: 827407472409970152
+      bola fuego paleta 600 x333_12: -1123658584269271992
+      bola fuego paleta 600 x333_13: 3996869374883715637
+      bola fuego paleta 600 x333_14: 3354039569854161937
+      bola fuego paleta 600 x333_15: -2338765423373722911
+      bola fuego paleta 600 x333_16: 7885913575262941052
+      bola fuego paleta 600 x333_17: 9018341784915572762
+      bola fuego paleta 600 x333_18: 7635350226331024462
+      bola fuego paleta 600 x333_19: -3172993416251630515
+      bola fuego paleta 600 x333_2: -616525088924019704
+      bola fuego paleta 600 x333_20: -4705254757922563008
+      bola fuego paleta 600 x333_21: 4616052858488926549
+      bola fuego paleta 600 x333_22: 570971343829448692
+      bola fuego paleta 600 x333_23: 8158881630385098327
+      bola fuego paleta 600 x333_24: -8625192183677900692
+      bola fuego paleta 600 x333_25: 6353377656922524279
+      bola fuego paleta 600 x333_26: 7219011967050779136
+      bola fuego paleta 600 x333_27: -2808674260631812671
+      bola fuego paleta 600 x333_28: -4052771076403806839
+      bola fuego paleta 600 x333_29: 1354084798030513682
+      bola fuego paleta 600 x333_3: 1233264546501038659
+      bola fuego paleta 600 x333_30: 4585311295202516182
+      bola fuego paleta 600 x333_31: 4911610990074864686
+      bola fuego paleta 600 x333_32: 9112935095664422747
+      bola fuego paleta 600 x333_4: 4122918936540683245
+      bola fuego paleta 600 x333_5: 753251450123595129
+      bola fuego paleta 600 x333_6: 9201968996457747198
+      bola fuego paleta 600 x333_7: -9062657062281919476
+      bola fuego paleta 600 x333_8: -8747069405968834628
+      bola fuego paleta 600 x333_9: -1673837726306818622
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

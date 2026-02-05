@@ -7,7 +7,11 @@ public class CoinPatternMover : MonoBehaviour
 
     void Update()
     {
-        float speed = (GameSpeed_BG.Instance != null) ? GameSpeed_BG.Instance.CurrentSpeed : 4f;
+        if (GameSpeed_BG.Instance == null) return;
+
+        // Velocidad EXACTA del fondo (la que escala con el tiempo)
+        float speed = GameSpeed_BG.Instance.CurrentSpeed;
+
         transform.Translate(Vector3.left * (speed + extraSpeed) * Time.deltaTime);
     }
 }

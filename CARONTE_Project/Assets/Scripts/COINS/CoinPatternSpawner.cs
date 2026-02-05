@@ -69,8 +69,9 @@ public class CoinPatternSpawner : MonoBehaviour
         // Guardamos referencia para bloquear spawns
         currentPattern = patternObj;
 
-        var mover = patternObj.GetComponent<ObstacleMover>();
-        if (mover == null) mover = patternObj.AddComponent<ObstacleMover>();
+        var mover = patternObj.GetComponent<CoinPatternMover>();
+        if (mover == null) mover = patternObj.AddComponent<CoinPatternMover>();
+
         mover.extraSpeed = 0f;
 
         if (patternObj.GetComponent<DestroyOffscreen>() == null)
