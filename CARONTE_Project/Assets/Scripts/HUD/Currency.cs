@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Currency : MonoBehaviour
 {
@@ -41,7 +41,24 @@ public class Currency : MonoBehaviour
     public void AddSpecialCoins(int amount)
     {
         SpecialCoins += amount;
+        Debug.Log($"[Currency] SpecialCoins now = {SpecialCoins}");
+
         if (UIHUD.Instance != null)
             UIHUD.Instance.Refresh(Coins, SpecialCoins);
+    }
+
+
+    // ✅ NUEVO: gastar monedas (para +1 Life)
+    public bool TrySpendCoins(int amount)
+    {
+        if (amount <= 0) return true;
+        if (Coins < amount) return false;
+
+        Coins -= amount;
+
+        if (UIHUD.Instance != null)
+            UIHUD.Instance.Refresh(Coins, SpecialCoins);
+
+        return true;
     }
 }

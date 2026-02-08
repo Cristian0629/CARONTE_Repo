@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -2536173135688709424}
   m_Layer: 0
   m_Name: FLECHA
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,8 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 843c5cc634da2f14690a6a7c44c86104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleMover
-  obstacleStartSpeed: 3.8
-  obstacleMaxSpeed: 8.2
+  startSpeedMultiplier: 0.65
+  maxSpeedMultiplier: 0.9
   extraSpeed: 0
 --- !u!212 &-2536173135688709424
 SpriteRenderer:

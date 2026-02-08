@@ -12,8 +12,11 @@ public class SpecialCoinPickup : MonoBehaviour
         collected = true;
 
         SpecialCoinManager.Instance?.Add(1);
+        Debug.Log("[SpecialCoinPickup] Added 1 to SpecialCoinManager");
 
-        // desactiva collider para evitar “pickup fantasma”
+        Currency.Instance?.AddSpecialCoins(1);
+        Debug.Log("[SpecialCoinPickup] Added 1 to Currency.SpecialCoins");
+
         var col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 

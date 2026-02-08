@@ -1,9 +1,13 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CoinPickup : MonoBehaviour
 {
     [SerializeField] private int value = 1;
-    bool collected = false;
+
+    // ✅ NUEVO: marcar si esta moneda es especial
+    [SerializeField] private bool isSpecialCoin = false;
+
+    private bool collected = false;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -12,17 +16,23 @@ public class CoinPickup : MonoBehaviour
 
         collected = true;
 
-        Currency.Instance?.AddCoins(value);
+        if (Currency.Instance != null)
+        {
+            if (isSpecialCoin)
+                Currency.Instance.AddSpecialCoins(value); // 💜 especiales
+            else
+                Currency.Instance.AddCoins(value);        // 🟡 normales
+        }
 
         // Desactiva el collider inmediatamente
         var col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
-        // Opcional: ocultar sprite al instante
+        // Ocultar sprite al instante
         var sr = GetComponent<SpriteRenderer>();
         if (sr != null) sr.enabled = false;
 
-        // Destruir al final del frame
         Destroy(gameObject);
     }
 }
+

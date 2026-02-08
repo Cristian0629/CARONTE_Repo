@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameOverManager : MonoBehaviour
 {
@@ -9,19 +10,23 @@ public class GameOverManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private CanvasGroup gameOverGroup;
 
+    [Header("Game Over Stats (TMP)")]
+    [SerializeField] private TMP_Text metersResultText;
+    [SerializeField] private TMP_Text coinsResultText;
+    [SerializeField] private TMP_Text specialCoinsResultText;
+
     [Header("Freeze whole game on Game Over")]
     [SerializeField] private bool freezeWholeGame = true;
 
     [Header("Player (auto si lo dejas vacío)")]
     [SerializeField] private Transform player;
-    [SerializeField] private PlayerWaveRide playerController; 
-    [SerializeField] private Rigidbody2D playerRb;            
+    [SerializeField] private PlayerWaveRide playerController;
+    [SerializeField] private Rigidbody2D playerRb;
 
-   
     [SerializeField] private PlayerHit playerHit;
 
     [Header("Stop systems")]
-    [SerializeField] private MonoBehaviour[] spawnersToStop; 
+    [SerializeField] private MonoBehaviour[] spawnersToStop;
 
     [Header("Extra Life")]
     [SerializeField] private bool allowExtraLife = true;
@@ -36,13 +41,8 @@ public class GameOverManager : MonoBehaviour
     [SerializeField] private bool debugLogs = false;
 
     private bool shown;
+    private bool isReviving;
 
-    [Header("Extra Lives (for coins later)")]
-    [SerializeField] private int extraLivesAvailable = 1; 
-    private bool isReviving; 
-
-
-    
     public bool IsGameOverShown => shown;
 
     private void Awake()
@@ -50,7 +50,6 @@ public class GameOverManager : MonoBehaviour
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
 
-        
         Time.timeScale = 1f;
 
         AutoSetupPlayerRefs();
@@ -69,8 +68,6 @@ public class GameOverManager : MonoBehaviour
         {
             if (playerController == null) playerController = player.GetComponent<PlayerWaveRide>();
             if (playerRb == null) playerRb = player.GetComponent<Rigidbody2D>();
-
-            
             if (playerHit == null) playerHit = player.GetComponent<PlayerHit>();
         }
 
@@ -94,7 +91,9 @@ public class GameOverManager : MonoBehaviour
 
         if (debugLogs) Debug.Log("[GameOverManager] SHOW GAME OVER");
 
-        
+        // actualizar stats antes de mostrar
+        UpdateGameOverStatsUI();
+
         var pause = FindFirstObjectByType<PauseMenu>();
         if (pause != null) pause.ForceClose();
 
@@ -119,6 +118,51 @@ public class GameOverManager : MonoBehaviour
         }
     }
 
+    private void UpdateGameOverStatsUI()
+    {
+        // Metros
+        if (metersResultText != null)
+        {
+            float meters = 0f;
+            if (UIHUD.Instance != null)
+                meters = UIHUD.Instance.CurrentMeters;
+
+            metersResultText.text = $"{meters:0} m";
+        }
+
+        // Monedas
+        if (coinsResultText != null)
+        {
+            int coins = (Currency.Instance != null) ? Currency.Instance.Coins : 0;
+            coinsResultText.text = coins.ToString();
+        }
+
+        // ✅ CAMBIADO: Monedas especiales (usa el contador real SpecialCoinManager)
+        if (specialCoinsResultText != null)
+        {
+            if (SpecialCoinManager.Instance != null)
+            {
+                int current = SpecialCoinManager.Instance.Current;
+                int target = SpecialCoinManager.Instance.target;
+
+                // Mismo formato que tu HUD: "X/15"
+                specialCoinsResultText.text = $"{current}/{target}";
+
+                if (debugLogs)
+                    Debug.Log($"[GameOverManager] SpecialCoinManager Current={current}/{target}");
+            }
+            else
+            {
+                // Fallback
+                int sc = (Currency.Instance != null) ? Currency.Instance.SpecialCoins : 0;
+                specialCoinsResultText.text = sc.ToString();
+
+                if (debugLogs)
+                    Debug.Log("[GameOverManager] SpecialCoinManager NULL, Currency.SpecialCoins=" + sc);
+            }
+        }
+    }
+
     private void StopPlayerCompletely()
     {
         if (player == null || (playerController == null && playerRb == null))
@@ -129,8 +173,7 @@ public class GameOverManager : MonoBehaviour
 
         if (playerRb != null)
         {
-            
-            playerRb.linearVelocity = Vector2.zero;
+            playerRb.linearVelocity = Vector2.zero; // si falla: velocity
             playerRb.angularVelocity = 0f;
             playerRb.simulated = false;
         }
@@ -179,16 +222,15 @@ public class GameOverManager : MonoBehaviour
     public void ExtraLife()
     {
         if (!allowExtraLife) return;
-        if (!shown) return;                 
-        if (isReviving) return;             
-        if (extraLivesAvailable <= 0) return;
+        if (!shown) return;
+        if (isReviving) return;
 
-        extraLivesAvailable--;
+        if (Currency.Instance == null) return;
+        if (!Currency.Instance.TrySpendCoins(250)) return;
+
         isReviving = true;
-
         StartCoroutine(ExtraLifeRoutine());
     }
-
 
     private IEnumerator ExtraLifeRoutine()
     {
@@ -198,8 +240,9 @@ public class GameOverManager : MonoBehaviour
 
         Hide();
 
-        
         ClearNearbyObstacles();
+
+        yield return null;
 
         if (GameSpeed_BG.Instance != null)
         {
@@ -215,7 +258,6 @@ public class GameOverManager : MonoBehaviour
 
         ResumePlayerCompletely();
 
-        
         if (playerHit == null) AutoSetupPlayerRefs();
         if (playerHit != null)
             playerHit.ResetDeath();
@@ -223,11 +265,6 @@ public class GameOverManager : MonoBehaviour
         shown = false;
         isReviving = false;
         yield return null;
-    }
-
-    public void AddExtraLife(int amount = 1)
-    {
-        extraLivesAvailable += Mathf.Max(0, amount);
     }
 
     private void Hide()
@@ -240,9 +277,11 @@ public class GameOverManager : MonoBehaviour
 
     private void ClearNearbyObstacles()
     {
-        
         var obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
         foreach (var o in obstacles)
-            Destroy(o);
+        {
+            if (o.name.Contains("(Clone)"))
+                Destroy(o);
+        }
     }
 }

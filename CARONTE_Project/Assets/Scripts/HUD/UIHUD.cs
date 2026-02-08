@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 public class UIHUD : MonoBehaviour
@@ -16,10 +16,13 @@ public class UIHUD : MonoBehaviour
 
     [Header("If your player doesn't move in X (world scrolls)")]
     [SerializeField] private bool useSpeedBasedMeters = true;
-    [SerializeField] private float worldSpeed = 5f; 
+    [SerializeField] private float worldSpeed = 5f;
 
     private float startX;
     private float metersAccum;
+
+    // ✅ valor actual de metros (para GameOver)
+    public float CurrentMeters { get; private set; }
 
     void Awake()
     {
@@ -31,12 +34,16 @@ public class UIHUD : MonoBehaviour
         if (player != null)
             startX = player.position.x;
 
-        Refresh(0, 0);
+        // ✅ En vez de poner 0, sincroniza con Currency si existe
+        UpdateCurrencyUIFromCurrency();
     }
 
     void Update()
     {
         UpdateMeters();
+
+        // ✅ NUEVO: sincroniza monedas normales y especiales desde Currency (source of truth)
+        UpdateCurrencyUIFromCurrency();
     }
 
     void UpdateMeters()
@@ -45,7 +52,6 @@ public class UIHUD : MonoBehaviour
 
         if (useSpeedBasedMeters)
         {
-            
             float s = (GameSpeed.Instance != null) ? GameSpeed.Instance.Speed : worldSpeed;
             metersAccum += s * Time.deltaTime;
 
@@ -53,15 +59,29 @@ public class UIHUD : MonoBehaviour
         }
         else
         {
-            
             if (player == null) return;
             meters = Mathf.Max(0f, (player.position.x - startX) * metersMultiplier);
         }
+
+        CurrentMeters = meters;
 
         if (metersText != null)
             metersText.text = $"{meters:0} m";
     }
 
+    // ✅ NUEVO: siempre muestra lo que realmente hay en Currency
+    private void UpdateCurrencyUIFromCurrency()
+    {
+        if (Currency.Instance == null) return;
+
+        if (coinsText != null)
+            coinsText.text = Currency.Instance.Coins.ToString();
+
+        if (specialCoinsText != null)
+            specialCoinsText.text = Currency.Instance.SpecialCoins.ToString();
+    }
+
+    // Lo dejamos por compatibilidad (si otros scripts lo llaman, seguirá funcionando)
     public void Refresh(int coins, int specialCoins)
     {
         if (coinsText != null) coinsText.text = coins.ToString();
@@ -71,6 +91,7 @@ public class UIHUD : MonoBehaviour
     public void ResetMeters()
     {
         metersAccum = 0f;
+        CurrentMeters = 0f;
         if (player != null) startX = player.position.x;
     }
 }
