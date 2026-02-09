@@ -153,6 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MagnetHelmetPickup
   magnetDuration: 6
+  auraPrefab: {fileID: 9078103505830352821, guid: af00a4d42e4127740b5bd52b8b10fec1, type: 3}
+  auraChildName: MagnetAura
 --- !u!114 &4425080632974745689
 MonoBehaviour:
   m_ObjectHideFlags: 0

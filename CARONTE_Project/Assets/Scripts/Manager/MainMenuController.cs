@@ -3,10 +3,10 @@
 public class MainMenuController : MonoBehaviour
 {
     [Header("Scene Names (must match exactly)")]
+    [SerializeField] private string introDialogueSceneName = "IntroDialogue"; // ⬅️ NUEVO
     [SerializeField] private string gameSceneName = "CARONTE_Scene";
     [SerializeField] private string extrasSceneName = "Extras";
     [SerializeField] private string mainMenuSceneName = "Main Menu";
-
 
     [Header("Fade Durations")]
     [SerializeField] private float playFadeOut = 1.2f;
@@ -17,7 +17,8 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneFader.Instance.FadeToScene(gameSceneName, playFadeOut, playFadeIn);
+        // ⬇️ AHORA VA A LA ESCENA DE DIÁLOGO
+        SceneFader.Instance.FadeToScene(introDialogueSceneName, playFadeOut, playFadeIn);
     }
 
     public void OpenExtras()
@@ -27,13 +28,11 @@ public class MainMenuController : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
-        
         SceneFader.Instance.FadeToScene(mainMenuSceneName, extrasFadeOut, extrasFadeIn);
     }
 
-
     public void ExitGame()
     {
-        SceneFader.Instance.FadeAndQuit(extrasFadeOut); 
+        SceneFader.Instance.FadeAndQuit(extrasFadeOut);
     }
 }

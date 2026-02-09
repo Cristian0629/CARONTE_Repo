@@ -25,7 +25,7 @@ public class SceneFader : MonoBehaviour
     private bool didMainMenuStartupFade = false;
     private Coroutine currentRoutine;
 
-    
+    // (-1 = usar defaultFadeIn)
     private float nextSceneFadeInTime = -1f;
 
     private void Awake()
@@ -52,14 +52,17 @@ public class SceneFader : MonoBehaviour
     {
         if (currentRoutine != null) StopCoroutine(currentRoutine);
 
-        
+        // por si vienes de pausas
         Time.timeScale = 1f;
 
-        
-        canvasGroup.alpha = 1f;
-        canvasGroup.blocksRaycasts = true;
+        // empezar tapando
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = 1f;
+            canvasGroup.blocksRaycasts = true;
+        }
 
-        
+        // 1) Fade lento SOLO al iniciar por primera vez en el main menu
         if (doMainMenuStartupFade && !didMainMenuStartupFade && scene.name == mainMenuSceneName)
         {
             didMainMenuStartupFade = true;
@@ -67,24 +70,29 @@ public class SceneFader : MonoBehaviour
             return;
         }
 
-        
-        if (holdBlackUntilAnyInput && scene.name == gameplaySceneName)
+        // 2) ✅ Si venimos con FadeToScene, usamos ese fade-in y NO hacemos Hold.
+        float fadeInToUse = (nextSceneFadeInTime > 0f) ? nextSceneFadeInTime : defaultFadeIn;
+        bool cameFromFadeToScene = (nextSceneFadeInTime > 0f);
+        nextSceneFadeInTime = -1f;
+
+        // 3) Hold SOLO si es gameplay y NO venimos de FadeToScene
+        if (holdBlackUntilAnyInput && scene.name == gameplaySceneName && !cameFromFadeToScene)
         {
-            currentRoutine = StartCoroutine(HoldBlackThenFadeIn(defaultFadeIn));
+            currentRoutine = StartCoroutine(HoldBlackThenFadeIn(fadeInToUse));
             return;
         }
 
-        
-        float fadeInToUse = (nextSceneFadeInTime > 0f) ? nextSceneFadeInTime : defaultFadeIn;
-        nextSceneFadeInTime = -1f; 
-
+        // 4) Resto: fade normal
         currentRoutine = StartCoroutine(FadeIn(fadeInToUse));
     }
 
     private IEnumerator HoldBlackThenFadeIn(float fadeInTime)
     {
-        canvasGroup.alpha = 1f;
-        canvasGroup.blocksRaycasts = true;
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = 1f;
+            canvasGroup.blocksRaycasts = true;
+        }
 
         Time.timeScale = 0f;
 
@@ -101,27 +109,10 @@ public class SceneFader : MonoBehaviour
         currentRoutine = StartCoroutine(FadeAndSwitch(sceneName, fadeOutTime, fadeInTime));
     }
 
-    public void MainMenu()
+    public void FadeFromBlack(float duration)
     {
-        Time.timeScale = 1f;
-
-        
-        if (SceneFader.Instance != null)
-            SceneFader.Instance.FadeToScene(mainMenuSceneName, 0.35f, 1.2f);
-        else
-            SceneManager.LoadScene(mainMenuSceneName);
-    }
-
-    public void Restart()
-    {
-        Time.timeScale = 1f;
-
-        var scene = SceneManager.GetActiveScene().name;
-
-        if (SceneFader.Instance != null)
-            SceneFader.Instance.FadeToScene(scene, 0.35f, 0.35f);
-        else
-            SceneManager.LoadScene(scene);
+        if (currentRoutine != null) StopCoroutine(currentRoutine);
+        currentRoutine = StartCoroutine(FadeIn(duration));
     }
 
     public void FadeAndQuit(float fadeOutTime)
@@ -140,12 +131,11 @@ public class SceneFader : MonoBehaviour
 #endif
     }
 
-    
     private IEnumerator FadeAndSwitch(string sceneName, float fadeOutTime, float fadeInTime)
     {
         yield return StartCoroutine(FadeOut(fadeOutTime));
 
-        
+        // guardamos el fade-in para la siguiente escena
         nextSceneFadeInTime = fadeInTime;
 
         SceneManager.LoadScene(sceneName);
@@ -153,6 +143,8 @@ public class SceneFader : MonoBehaviour
 
     private IEnumerator FadeOut(float duration)
     {
+        if (canvasGroup == null) yield break;
+
         float t = 0f;
         canvasGroup.blocksRaycasts = true;
 
@@ -168,6 +160,8 @@ public class SceneFader : MonoBehaviour
 
     private IEnumerator FadeIn(float duration)
     {
+        if (canvasGroup == null) yield break;
+
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
