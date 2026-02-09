@@ -1,8 +1,12 @@
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerWaveRide : MonoBehaviour
 {
+    // ✅ NUEVO: singleton simple para que las monedas puedan encontrar al player
+    public static PlayerWaveRide Instance { get; private set; }
+
     [Header("References")]
     public Transform groundCheck;
     public LayerMask groundMask;
@@ -25,14 +29,25 @@ public class PlayerWaveRide : MonoBehaviour
     public float reEngageDuration = 0.18f;
 
     [Header("Smooth fall cancel (no brusco)")]
-    public float fallCancelTo = -0.6f;     
-    public float fallCancelRate = 120f;    
+    public float fallCancelTo = -0.6f;
+    public float fallCancelRate = 120f;
     public float fallCancelTime = 0.20f;
 
     [Header("Re-engage kick (makes it rise sooner, still smooth)")]
-    public float reEngageKickUpSpeed = 1.8f;   
-    public float reEngageKickRate = 55f;       
-    public float reEngageKickTime = 0.14f;     
+    public float reEngageKickUpSpeed = 1.8f;
+    public float reEngageKickRate = 55f;
+    public float reEngageKickTime = 0.14f;
+
+    // ✅ NUEVO: Magnet config
+    [Header("Magnet PowerUp")]
+    [SerializeField] private float magnetRadius = 3.5f;
+    [SerializeField] private float magnetPullSpeed = 18f;
+
+    public bool MagnetActive { get; private set; }
+    public float MagnetRadius => magnetRadius;
+    public float MagnetPullSpeed => magnetPullSpeed;
+
+    private Coroutine magnetRoutine;
 
     private Rigidbody2D rb;
     private bool wasHolding;
@@ -43,10 +58,34 @@ public class PlayerWaveRide : MonoBehaviour
 
     void Awake()
     {
+        Instance = this;
+
         rb = GetComponent<Rigidbody2D>();
         rb.freezeRotation = true;
         rb.gravityScale = gravityScale;
-        rb.linearDamping = 0f; 
+        rb.linearDamping = 0f;
+    }
+
+    // ✅ NUEVO: activar imán X segundos (reinicia si lo pillas otra vez)
+    public void ActivateMagnet(float durationSeconds)
+    {
+        if (magnetRoutine != null) StopCoroutine(magnetRoutine);
+        magnetRoutine = StartCoroutine(MagnetRoutine(durationSeconds));
+    }
+
+    private IEnumerator MagnetRoutine(float duration)
+    {
+        MagnetActive = true;
+
+        float t = 0f;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        MagnetActive = false;
+        magnetRoutine = null;
     }
 
     void FixedUpdate()
@@ -54,15 +93,12 @@ public class PlayerWaveRide : MonoBehaviour
         bool holding = Input.GetKey(KeyCode.Space);
         bool grounded = IsGrounded();
 
-        
         if (holding && !wasHolding)
         {
             if (!grounded)
             {
                 fallCancelTimer = fallCancelTime;
                 reEngageTimer = reEngageDuration;
-
-                
                 kickTimer = reEngageKickTime;
             }
             else
@@ -71,7 +107,6 @@ public class PlayerWaveRide : MonoBehaviour
             }
         }
 
-        
         if (fallCancelTimer > 0f)
         {
             if (rb.linearVelocity.y < fallCancelTo)
@@ -82,7 +117,6 @@ public class PlayerWaveRide : MonoBehaviour
             fallCancelTimer -= Time.fixedDeltaTime;
         }
 
-        
         if (kickTimer > 0f)
         {
             float newY = Mathf.MoveTowards(rb.linearVelocity.y, reEngageKickUpSpeed, reEngageKickRate * Time.fixedDeltaTime);
@@ -90,7 +124,6 @@ public class PlayerWaveRide : MonoBehaviour
             kickTimer -= Time.fixedDeltaTime;
         }
 
-        
         if (holding)
         {
             float accel = liftAcceleration;
@@ -121,7 +154,6 @@ public class PlayerWaveRide : MonoBehaviour
             kickTimer = 0f;
         }
 
-        
         if (rb.linearVelocity.y < -maxDownSpeed)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -maxDownSpeed);
 
@@ -138,5 +170,8 @@ public class PlayerWaveRide : MonoBehaviour
     {
         if (groundCheck == null) return;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+
+        // ✅ NUEVO: gizmo del imán (solo para ver el radio)
+        Gizmos.DrawWireSphere(transform.position, magnetRadius);
     }
 }

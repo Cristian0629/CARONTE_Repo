@@ -4,10 +4,28 @@ public class CoinPickup : MonoBehaviour
 {
     [SerializeField] private int value = 1;
 
-    // ✅ NUEVO: marcar si esta moneda es especial
     [SerializeField] private bool isSpecialCoin = false;
 
     private bool collected = false;
+
+    void Update()
+    {
+        // ✅ NUEVO: atracción por imán
+        var p = PlayerWaveRide.Instance;
+        if (p == null) return;
+        if (!p.MagnetActive) return;
+        if (collected) return;
+
+        float dist = Vector2.Distance(transform.position, p.transform.position);
+        if (dist > p.MagnetRadius) return;
+
+        // mover hacia el player
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            p.transform.position,
+            p.MagnetPullSpeed * Time.deltaTime
+        );
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -19,20 +37,17 @@ public class CoinPickup : MonoBehaviour
         if (Currency.Instance != null)
         {
             if (isSpecialCoin)
-                Currency.Instance.AddSpecialCoins(value); // 💜 especiales
+                Currency.Instance.AddSpecialCoins(value);
             else
-                Currency.Instance.AddCoins(value);        // 🟡 normales
+                Currency.Instance.AddCoins(value);
         }
 
-        // Desactiva el collider inmediatamente
         var col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
-        // Ocultar sprite al instante
         var sr = GetComponent<SpriteRenderer>();
         if (sr != null) sr.enabled = false;
 
         Destroy(gameObject);
     }
 }
-
