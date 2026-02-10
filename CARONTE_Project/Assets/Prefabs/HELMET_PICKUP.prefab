@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a42a7b2843b39ef4a8e64aaba8f3f44e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MagnetHelmetPickup
-  magnetDuration: 6
+  magnetDuration: 9
   auraPrefab: {fileID: 9078103505830352821, guid: af00a4d42e4127740b5bd52b8b10fec1, type: 3}
   auraChildName: MagnetAura
 --- !u!114 &4425080632974745689
