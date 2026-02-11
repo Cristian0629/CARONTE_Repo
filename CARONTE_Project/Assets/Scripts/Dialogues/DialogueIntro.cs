@@ -6,13 +6,19 @@ using UnityEngine.UI;
 
 public class DialogueIntro : MonoBehaviour
 {
-    public enum Speaker { Caronte, Protagonista }
+    public enum Speaker
+    {
+        Caronte,
+        Protagonista
+    }
 
     [System.Serializable]
     public class DialogueLine
     {
         public Speaker speaker;
-        [TextArea(2, 4)] public string text;
+
+        [TextArea(2, 4)]
+        public string text;
     }
 
     [Header("Text Boxes (uno por personaje)")]
@@ -38,12 +44,28 @@ public class DialogueIntro : MonoBehaviour
     [Header("Typewriter")]
     [SerializeField] private float letterDelay = 0.03f;
 
-    [Header("Next Scene")]
+    [Header("Next Scene (si NO es final)")]
     [SerializeField] private string gameplaySceneName = "CARONTE_Scene";
 
-    [Header("Fade To Black")]
+    [Header("Fade To Black (local)")]
     [SerializeField] private CanvasGroup fadeCanvasGroup;
-    [SerializeField] private float fadeOutTime = 0.8f;
+    [SerializeField] private float fadeOutTime = 1.2f;
+
+    [Header("Final Outro (solo en FinalDialogue)")]
+    [SerializeField] private bool isFinalDialogueScene = false;
+    [SerializeField] private string mainMenuSceneName = "Main Menu";
+
+    [Tooltip("Arrastra aquí el objeto del texto THANKS FOR PLAYING (o su padre). Déjalo desactivado al inicio.")]
+    [SerializeField] private GameObject thanksTextRoot;
+
+    [Tooltip("Opcional: si el THANKS tiene CanvasGroup, lo hace aparecer suave.")]
+    [SerializeField] private CanvasGroup thanksCanvasGroup;
+
+    [Tooltip("Cuánto tiempo se queda el THANKS en pantalla (5-7 recomendado).")]
+    [SerializeField] private float thanksShowTime = 6f;
+
+    [Tooltip("Fade a negro más largo en el final.")]
+    [SerializeField] private float finalFadeOutTime = 3.0f;
 
     private int index = 0;
     private Coroutine typingRoutine;
@@ -53,7 +75,7 @@ public class DialogueIntro : MonoBehaviour
     private Speaker currentSpeaker;
     private TMP_Text currentTextTarget;
 
-    // ✅ colores base (NO se modifican)
+    // ✅ Colores base para que NO se acumulen oscuridades
     private Color caronteBaseColorSprite = Color.white;
     private Color protaBaseColorSprite = Color.white;
     private Color caronteBaseColorUI = Color.white;
@@ -61,24 +83,31 @@ public class DialogueIntro : MonoBehaviour
 
     void Start()
     {
+        // Fade panel listo
         if (fadeCanvasGroup != null)
         {
             fadeCanvasGroup.alpha = 0f;
             fadeCanvasGroup.blocksRaycasts = false;
         }
 
-        // ✅ Guardar colores originales una sola vez
+        // Guardar colores originales
         if (caronteSprite != null) caronteBaseColorSprite = caronteSprite.color;
         if (protaSprite != null) protaBaseColorSprite = protaSprite.color;
 
         if (caronteUIImage != null) caronteBaseColorUI = caronteUIImage.color;
         if (protaUIImage != null) protaBaseColorUI = protaUIImage.color;
 
+        // Oculta ambos textboxes al inicio
         if (caronteBoxRoot != null) caronteBoxRoot.SetActive(false);
         if (protaBoxRoot != null) protaBoxRoot.SetActive(false);
 
+        // Limpia textos
         if (caronteDialogueText != null) caronteDialogueText.text = "";
         if (protaDialogueText != null) protaDialogueText.text = "";
+
+        // THANKS oculto al inicio
+        if (thanksTextRoot != null) thanksTextRoot.SetActive(false);
+        if (thanksCanvasGroup != null) thanksCanvasGroup.alpha = 0f;
 
         index = 0;
         ShowLine();
@@ -114,41 +143,30 @@ public class DialogueIntro : MonoBehaviour
     void ApplySpeaker(Speaker speaker)
     {
         currentSpeaker = speaker;
-
         bool caronteTalking = (speaker == Speaker.Caronte);
 
-        // 🔹 Activar SOLO el textbox del que habla
-        if (caronteBoxRoot != null)
-            caronteBoxRoot.SetActive(caronteTalking);
+        // ✅ Activar SOLO el textbox del que habla
+        if (caronteBoxRoot != null) caronteBoxRoot.SetActive(caronteTalking);
+        if (protaBoxRoot != null) protaBoxRoot.SetActive(!caronteTalking);
 
-        if (protaBoxRoot != null)
-            protaBoxRoot.SetActive(!caronteTalking);
-
-        // 🔹 Elegir a qué texto se va a escribir
         currentTextTarget = caronteTalking ? caronteDialogueText : protaDialogueText;
 
-        // 🔹 Limpiar SIEMPRE ambos textos antes de escribir la nueva línea
-        if (caronteDialogueText != null)
-            caronteDialogueText.text = "";
+        // Limpia ambos antes de escribir
+        if (caronteDialogueText != null) caronteDialogueText.text = "";
+        if (protaDialogueText != null) protaDialogueText.text = "";
 
-        if (protaDialogueText != null)
-            protaDialogueText.text = "";
-
-        // 🔹 Ajustar iluminación personajes
+        // Iluminación personajes (sin acumulación)
         SetDimFromBase(caronteIsDim: !caronteTalking, protaIsDim: caronteTalking);
     }
 
-
     void SetDimFromBase(bool caronteIsDim, bool protaIsDim)
     {
-        // SpriteRenderer (mundo)
         if (caronteSprite != null)
             caronteSprite.color = ApplyDimToBase(caronteBaseColorSprite, caronteIsDim);
 
         if (protaSprite != null)
             protaSprite.color = ApplyDimToBase(protaBaseColorSprite, protaIsDim);
 
-        // UI Image (Canvas)
         if (caronteUIImage != null)
             caronteUIImage.color = ApplyDimToBase(caronteBaseColorUI, caronteIsDim);
 
@@ -201,20 +219,25 @@ public class DialogueIntro : MonoBehaviour
 
         if (index >= lines.Length)
         {
-            StartCoroutine(FadeAndLoad());
+            if (isFinalDialogueScene)
+                StartCoroutine(FinalThanksAndBackToMenu());
+            else
+                StartCoroutine(FadeAndLoad(gameplaySceneName, fadeOutTime));
+
             return;
         }
 
         ShowLine();
     }
 
-    private IEnumerator FadeAndLoad()
+    private IEnumerator FadeAndLoad(string sceneName, float duration)
     {
         isEnding = true;
 
+        // Si no hay fade, carga directo
         if (fadeCanvasGroup == null)
         {
-            SceneManager.LoadScene(gameplaySceneName);
+            SceneManager.LoadScene(sceneName);
             yield break;
         }
 
@@ -224,15 +247,99 @@ public class DialogueIntro : MonoBehaviour
         float start = fadeCanvasGroup.alpha;
         float end = 1f;
 
-        while (t < fadeOutTime)
+        while (t < duration)
         {
             t += Time.unscaledDeltaTime;
-            float p = Mathf.Clamp01(t / fadeOutTime);
+            float p = Mathf.Clamp01(t / duration);
             fadeCanvasGroup.alpha = Mathf.Lerp(start, end, p);
             yield return null;
         }
 
         fadeCanvasGroup.alpha = 1f;
-        SceneManager.LoadScene(gameplaySceneName);
+        SceneManager.LoadScene(sceneName);
+    }
+
+    private IEnumerator FinalThanksAndBackToMenu()
+    {
+        isEnding = true;
+
+        // Oculta cajas de diálogo para que no se cuelen
+        if (caronteBoxRoot != null) caronteBoxRoot.SetActive(false);
+        if (protaBoxRoot != null) protaBoxRoot.SetActive(false);
+
+        // 1) Fade a negro inicial (el que ya tenías)
+        if (fadeCanvasGroup != null)
+        {
+            fadeCanvasGroup.blocksRaycasts = true;
+
+            float t = 0f;
+            float duration = Mathf.Max(0.01f, finalFadeOutTime);
+
+            while (t < duration)
+            {
+                t += Time.unscaledDeltaTime;
+                float p = Mathf.Clamp01(t / duration);
+                fadeCanvasGroup.alpha = Mathf.Lerp(0f, 1f, p);
+                yield return null;
+            }
+
+            fadeCanvasGroup.alpha = 1f;
+        }
+
+        // 2) Aparecen los textos (THANKS + créditos) poco a poco
+        if (thanksTextRoot != null) thanksTextRoot.SetActive(true);
+
+        float appearDelay = 0.6f;     // ⬅️ espera un poquito antes de que empiecen a salir
+        float appearTime = 2.0f;      // ⬅️ cuánto tardan en aparecer
+        float holdTime = 10.0f;       // ⬅️ cuánto tiempo se quedan para leer
+        float disappearTime = 3.5f;   // ⬅️ 3-4s para desaparecer antes de ir al menú
+
+        if (thanksCanvasGroup != null)
+        {
+            thanksCanvasGroup.alpha = 0f;
+
+            // pequeño delay antes de aparecer
+            yield return new WaitForSecondsRealtime(appearDelay);
+
+            // aparecer suave
+            float a = 0f;
+            while (a < appearTime)
+            {
+                a += Time.unscaledDeltaTime;
+                float p = Mathf.Clamp01(a / appearTime);
+                thanksCanvasGroup.alpha = Mathf.Lerp(0f, 1f, p);
+                yield return null;
+            }
+            thanksCanvasGroup.alpha = 1f;
+        }
+        else
+        {
+            // si no hay CanvasGroup, al menos esperamos el delay
+            yield return new WaitForSecondsRealtime(appearDelay);
+        }
+
+        // 3) Tiempo para leer
+        yield return new WaitForSecondsRealtime(holdTime);
+
+        // 4) “Segundo fade” (aquí ya estamos en negro, así que hacemos desaparecer textos 3–4s)
+        if (thanksCanvasGroup != null)
+        {
+            float d = 0f;
+            while (d < disappearTime)
+            {
+                d += Time.unscaledDeltaTime;
+                float p = Mathf.Clamp01(d / disappearTime);
+                thanksCanvasGroup.alpha = Mathf.Lerp(1f, 0f, p);
+                yield return null;
+            }
+            thanksCanvasGroup.alpha = 0f;
+        }
+
+        // (opcional) desactivar el grupo
+        if (thanksTextRoot != null) thanksTextRoot.SetActive(false);
+
+        // 5) Cargar menú (seguimos en negro)
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(mainMenuSceneName);
     }
 }

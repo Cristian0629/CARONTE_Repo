@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1169729896510122561
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3035308082495735642}
+  - component: {fileID: 4956426659848964339}
+  m_Layer: 0
+  m_Name: DialogueManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3035308082495735642
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169729896510122561}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.66053, y: -2.23654, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4956426659848964339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169729896510122561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c7a3609eca5b5e4587d52ee66c779dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueIntro
+  caronteBoxRoot: {fileID: 0}
+  caronteDialogueText: {fileID: 0}
+  protaBoxRoot: {fileID: 0}
+  protaDialogueText: {fileID: 0}
+  caronteSprite: {fileID: 0}
+  protaSprite: {fileID: 0}
+  caronteUIImage: {fileID: 0}
+  protaUIImage: {fileID: 0}
+  dimMultiplier: 0.45
+  lines:
+  - speaker: 0
+    text: "So\u2026 you are the one who wishes to take my place one day."
+  - speaker: 0
+    text: Do you understand what that truly means?
+  - speaker: 1
+    text: I thought it meant guiding souls across the river.
+  - speaker: 1
+    text: Helping the dead find their final path.
+  - speaker: 0
+    text: "Guiding them? Helping them? How cute.\nThis is not mercy\u2026 this is
+      duty."
+  - speaker: 0
+    text: For centuries I have ferried the lost, the damned, the forgotten.
+  - speaker: 0
+    text: Not one of them crossed without paying the price.
+  - speaker: 1
+    text: "The price\u2026 you mean the obols, right?\n"
+  - speaker: 1
+    text: The coins the dead carry for the passage?
+  - speaker: 0
+    text: 'Exactly. Nothing moves in the underworld without balance.
+
+      No coin,
+      no crossing.'
+  - speaker: 0
+    text: And today, your training begins with a simple task.
+  - speaker: 0
+    text: Bring me fifteen obols from wandering souls.
+  - speaker: 1
+    text: "Fifteen? That sounds\u2026 like a lot. What do you need so many for?"
+  - speaker: 0
+    text: That is not for you to question yet.
+  - speaker: 0
+    text: 'The obols are more than payment. '
+  - speaker: 0
+    text: "They are memory, regret\u2026 unfinished business made metal."
+  - speaker: 1
+    text: So every coin carries a story?
+  - speaker: 0
+    text: Now you begin to understand.
+  - speaker: 0
+    text: And understanding is heavier than any boat.
+  - speaker: 0
+    text: "Collect the fifteen obols. Then return to me\u2026 and I will tell you
+      why I truly need them."
+  - speaker: 1
+    text: "Alright\u2026 I\u2019ll do it. I won\u2019t fail you, master."
+  - speaker: 0
+    text: "We shall see, apprentice. The river is patient\u2026 but I am not."
+  letterDelay: 0.03
+  gameplaySceneName: CARONTE_Scene
+  fadeCanvasGroup: {fileID: 0}
+  fadeOutTime: 2.5

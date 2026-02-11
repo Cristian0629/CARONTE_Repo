@@ -4146,6 +4146,11 @@ MonoBehaviour:
   target: 15
   specialCoinsText: {fileID: 2023932663}
   specialCoinsTextName: SpecialCoinsText
+  finalSceneName: FinalDialogue
+  finalSequenceDuration: 2.2
+  minTimeScale: 0.12
+  fadeOutTime: 2.2
+  fadeInTime: 1.2
 --- !u!4 &1038002560
 Transform:
   m_ObjectHideFlags: 0

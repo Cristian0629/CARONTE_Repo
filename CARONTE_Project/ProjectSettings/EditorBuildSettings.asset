@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CARONTE_Scene.unity
     guid: 7d475b936ed2f3244a0f4b4c5b89c4e9
+  - enabled: 1
+    path: Assets/Scenes/FinalDialogue.unity
+    guid: ef95a8db85a57f7499ae01c9c9170f86
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
