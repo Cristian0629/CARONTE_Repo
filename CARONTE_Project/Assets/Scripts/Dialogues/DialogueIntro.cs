@@ -2,15 +2,38 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class DialogueIntro : MonoBehaviour
 {
-    [Header("UI")]
-    [SerializeField] private TMP_Text dialogueText;
+    public enum Speaker { Caronte, Protagonista }
+
+    [System.Serializable]
+    public class DialogueLine
+    {
+        public Speaker speaker;
+        [TextArea(2, 4)] public string text;
+    }
+
+    [Header("Text Boxes (uno por personaje)")]
+    [SerializeField] private GameObject caronteBoxRoot;
+    [SerializeField] private TMP_Text caronteDialogueText;
+
+    [SerializeField] private GameObject protaBoxRoot;
+    [SerializeField] private TMP_Text protaDialogueText;
+
+    [Header("Personajes (oscurecer el que NO habla)")]
+    [SerializeField] private SpriteRenderer caronteSprite;
+    [SerializeField] private SpriteRenderer protaSprite;
+
+    [SerializeField] private Image caronteUIImage;
+    [SerializeField] private Image protaUIImage;
+
+    [Range(0f, 1f)]
+    [SerializeField] private float dimMultiplier = 0.45f;
 
     [Header("Dialogue Lines")]
-    [TextArea(2, 4)]
-    [SerializeField] private string[] lines;
+    [SerializeField] private DialogueLine[] lines;
 
     [Header("Typewriter")]
     [SerializeField] private float letterDelay = 0.03f;
@@ -19,13 +42,22 @@ public class DialogueIntro : MonoBehaviour
     [SerializeField] private string gameplaySceneName = "CARONTE_Scene";
 
     [Header("Fade To Black")]
-    [SerializeField] private CanvasGroup fadeCanvasGroup; // arrastra aquí el CanvasGroup del FadePanel
+    [SerializeField] private CanvasGroup fadeCanvasGroup;
     [SerializeField] private float fadeOutTime = 0.8f;
 
     private int index = 0;
     private Coroutine typingRoutine;
     private bool isTyping;
-    private bool isEnding; // para bloquear input mientras hace fade
+    private bool isEnding;
+
+    private Speaker currentSpeaker;
+    private TMP_Text currentTextTarget;
+
+    // ✅ colores base (NO se modifican)
+    private Color caronteBaseColorSprite = Color.white;
+    private Color protaBaseColorSprite = Color.white;
+    private Color caronteBaseColorUI = Color.white;
+    private Color protaBaseColorUI = Color.white;
 
     void Start()
     {
@@ -35,7 +67,20 @@ public class DialogueIntro : MonoBehaviour
             fadeCanvasGroup.blocksRaycasts = false;
         }
 
-        dialogueText.text = "";
+        // ✅ Guardar colores originales una sola vez
+        if (caronteSprite != null) caronteBaseColorSprite = caronteSprite.color;
+        if (protaSprite != null) protaBaseColorSprite = protaSprite.color;
+
+        if (caronteUIImage != null) caronteBaseColorUI = caronteUIImage.color;
+        if (protaUIImage != null) protaBaseColorUI = protaUIImage.color;
+
+        if (caronteBoxRoot != null) caronteBoxRoot.SetActive(false);
+        if (protaBoxRoot != null) protaBoxRoot.SetActive(false);
+
+        if (caronteDialogueText != null) caronteDialogueText.text = "";
+        if (protaDialogueText != null) protaDialogueText.text = "";
+
+        index = 0;
         ShowLine();
     }
 
@@ -57,18 +102,81 @@ public class DialogueIntro : MonoBehaviour
 
     void ShowLine()
     {
+        if (lines == null || lines.Length == 0) return;
+        if (index < 0 || index >= lines.Length) return;
+
+        ApplySpeaker(lines[index].speaker);
+
         if (typingRoutine != null) StopCoroutine(typingRoutine);
-        typingRoutine = StartCoroutine(TypeLine(lines[index]));
+        typingRoutine = StartCoroutine(TypeLine(lines[index].text));
+    }
+
+    void ApplySpeaker(Speaker speaker)
+    {
+        currentSpeaker = speaker;
+
+        bool caronteTalking = (speaker == Speaker.Caronte);
+
+        // 🔹 Activar SOLO el textbox del que habla
+        if (caronteBoxRoot != null)
+            caronteBoxRoot.SetActive(caronteTalking);
+
+        if (protaBoxRoot != null)
+            protaBoxRoot.SetActive(!caronteTalking);
+
+        // 🔹 Elegir a qué texto se va a escribir
+        currentTextTarget = caronteTalking ? caronteDialogueText : protaDialogueText;
+
+        // 🔹 Limpiar SIEMPRE ambos textos antes de escribir la nueva línea
+        if (caronteDialogueText != null)
+            caronteDialogueText.text = "";
+
+        if (protaDialogueText != null)
+            protaDialogueText.text = "";
+
+        // 🔹 Ajustar iluminación personajes
+        SetDimFromBase(caronteIsDim: !caronteTalking, protaIsDim: caronteTalking);
+    }
+
+
+    void SetDimFromBase(bool caronteIsDim, bool protaIsDim)
+    {
+        // SpriteRenderer (mundo)
+        if (caronteSprite != null)
+            caronteSprite.color = ApplyDimToBase(caronteBaseColorSprite, caronteIsDim);
+
+        if (protaSprite != null)
+            protaSprite.color = ApplyDimToBase(protaBaseColorSprite, protaIsDim);
+
+        // UI Image (Canvas)
+        if (caronteUIImage != null)
+            caronteUIImage.color = ApplyDimToBase(caronteBaseColorUI, caronteIsDim);
+
+        if (protaUIImage != null)
+            protaUIImage.color = ApplyDimToBase(protaBaseColorUI, protaIsDim);
+    }
+
+    Color ApplyDimToBase(Color baseColor, bool dim)
+    {
+        float m = dim ? dimMultiplier : 1f;
+        return new Color(baseColor.r * m, baseColor.g * m, baseColor.b * m, baseColor.a);
     }
 
     IEnumerator TypeLine(string line)
     {
         isTyping = true;
-        dialogueText.text = "";
+
+        if (currentTextTarget == null)
+        {
+            isTyping = false;
+            yield break;
+        }
+
+        currentTextTarget.text = "";
 
         for (int i = 0; i < line.Length; i++)
         {
-            dialogueText.text += line[i];
+            currentTextTarget.text += line[i];
             yield return new WaitForSeconds(letterDelay);
         }
 
@@ -79,7 +187,10 @@ public class DialogueIntro : MonoBehaviour
     void FinishTypingInstant()
     {
         if (typingRoutine != null) StopCoroutine(typingRoutine);
-        dialogueText.text = lines[index];
+
+        if (currentTextTarget != null && index >= 0 && index < lines.Length)
+            currentTextTarget.text = lines[index].text;
+
         isTyping = false;
         typingRoutine = null;
     }
@@ -88,7 +199,6 @@ public class DialogueIntro : MonoBehaviour
     {
         index++;
 
-        // ✅ Si no quedan líneas, hacemos fade y cargamos escena
         if (index >= lines.Length)
         {
             StartCoroutine(FadeAndLoad());
@@ -102,7 +212,6 @@ public class DialogueIntro : MonoBehaviour
     {
         isEnding = true;
 
-        // Si no tienes fadeCanvasGroup asignado, carga directo
         if (fadeCanvasGroup == null)
         {
             SceneManager.LoadScene(gameplaySceneName);
@@ -124,7 +233,6 @@ public class DialogueIntro : MonoBehaviour
         }
 
         fadeCanvasGroup.alpha = 1f;
-
         SceneManager.LoadScene(gameplaySceneName);
     }
 }

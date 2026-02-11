@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: bc1d6afbc2c57e440b56c9f8e5a6fc45
+guid: b0c74f07a4428904cb249382321a9dc0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8687690646383823423
-    second: CARONTE FINAL_0
+      213: -3020935179814945091
+    second: 8 piedras back_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CARONTE FINAL_0
+      name: 8 piedras back_0
       rect:
         serializedVersion: 2
-        x: 13
-        y: 69
-        width: 1272
-        height: 1767
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f3a01301d90e09870800000000000000
-      internalID: 8687690646383823423
+      spriteID: dbe36a5a57b7316d0800000000000000
+      internalID: -3020935179814945091
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      CARONTE FINAL_0: 8687690646383823423
+      8 piedras back_0: -3020935179814945091
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

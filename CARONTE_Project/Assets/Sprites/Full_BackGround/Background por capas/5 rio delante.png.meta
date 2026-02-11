@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f8e8ae7da3e92ae4d9b6fee2bd39793c
+guid: 1faffae8139d8d04e9eac95a08179985
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2207411000681419257
-    second: PROTAGONISTA FINAL_0
+      213: 6344381383070945386
+    second: 5 rio delante_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PROTAGONISTA FINAL_0
+      name: 5 rio delante_0
       rect:
         serializedVersion: 2
-        x: 261
-        y: 43
-        width: 749
-        height: 1444
+        x: 0
+        y: 0
+        width: 1920
+        height: 210
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 70e2817e363bd51e0800000000000000
-      internalID: -2207411000681419257
+      spriteID: a609b810145cb0850800000000000000
+      internalID: 6344381383070945386
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PROTAGONISTA FINAL_0: -2207411000681419257
+      5 rio delante_0: 6344381383070945386
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
