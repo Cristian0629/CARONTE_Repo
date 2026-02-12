@@ -66,7 +66,7 @@ public class GameOverManager : MonoBehaviour
 
         Time.timeScale = 1f;
 
-        // ✅ NUEVO: AudioSource SOLO para el sonido de muerte (2D, no toca la música)
+        
         deathSfxSource = gameObject.AddComponent<AudioSource>();
         deathSfxSource.playOnAwake = false;
         deathSfxSource.loop = false;
@@ -111,14 +111,14 @@ public class GameOverManager : MonoBehaviour
 
         if (debugLogs) Debug.Log("[GameOverManager] SHOW GAME OVER");
 
-        // ✅ NUEVO: sonido al morir (justo cuando aparece el Game Over)
+        
         PlayDeathSfx();
 
-        // ✅ Música se para al morir
+        
         if (SceneMusicSwitcher.Instance != null)
             SceneMusicSwitcher.Instance.StopMusic();
 
-        // actualizar stats antes de mostrar
+        
         UpdateGameOverStatsUI();
 
         var pause = FindFirstObjectByType<PauseMenu>();
@@ -151,7 +151,7 @@ public class GameOverManager : MonoBehaviour
 
         if (deathSfxSource != null)
         {
-            // corta cualquier cosa anterior para que sea inmediato
+            
             deathSfxSource.Stop();
             deathSfxSource.pitch = 1f;
             deathSfxSource.PlayOneShot(deathSfx, deathSfxVolume);
@@ -160,7 +160,7 @@ public class GameOverManager : MonoBehaviour
 
     private void UpdateGameOverStatsUI()
     {
-        // Metros
+        
         if (metersResultText != null)
         {
             float meters = 0f;
@@ -170,14 +170,14 @@ public class GameOverManager : MonoBehaviour
             metersResultText.text = $"{meters:0} m";
         }
 
-        // Monedas
+        
         if (coinsResultText != null)
         {
             int coins = (Currency.Instance != null) ? Currency.Instance.Coins : 0;
             coinsResultText.text = coins.ToString();
         }
 
-        // Monedas especiales
+        
         if (specialCoinsResultText != null)
         {
             if (SpecialCoinManager.Instance != null)
@@ -210,7 +210,7 @@ public class GameOverManager : MonoBehaviour
 
         if (playerRb != null)
         {
-            playerRb.linearVelocity = Vector2.zero; // si falla: velocity
+            playerRb.linearVelocity = Vector2.zero; 
             playerRb.angularVelocity = 0f;
             playerRb.simulated = false;
         }
@@ -273,7 +273,7 @@ public class GameOverManager : MonoBehaviour
     {
         if (debugLogs) Debug.Log("[GameOverManager] EXTRA LIFE");
 
-        // ✅ Quita el freeze para poder ejecutar lógica de revive
+        
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
 
@@ -301,11 +301,11 @@ public class GameOverManager : MonoBehaviour
         if (playerHit != null)
             playerHit.ResetDeath();
 
-        // ✅ Música vuelve cuando revives (con rampa)
+        
         if (SceneMusicSwitcher.Instance != null)
             SceneMusicSwitcher.Instance.ResumeMusicWithRamp();
 
-        // ✅ cámara lenta al revivir -> vuelve a normal como en Pause
+        
         if (doReviveSlowMo)
         {
             if (reviveSlowMoRoutine != null) StopCoroutine(reviveSlowMoRoutine);

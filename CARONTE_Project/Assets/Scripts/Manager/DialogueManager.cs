@@ -36,7 +36,7 @@ public class DialogueManager : MonoBehaviour
     {
         dialoguePanel.SetActive(false);
 
-        // Si existe overlay negro, asegúrate de que al iniciar está negro (opcional)
+       
         if (blackFade != null)
         {
             blackFade.alpha = 1f;
@@ -53,7 +53,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            // Si no hay diálogo de intro, asegura que el juego no queda pausado
+            
             Time.timeScale = 1f;
             if (blackFade != null) blackFade.alpha = 0f;
         }
@@ -75,16 +75,16 @@ public class DialogueManager : MonoBehaviour
         lines = newLines;
         index = 0;
 
-        // ❄️ Congelar TODO el juego
+        
         Time.timeScale = 0f;
 
-        // Bloquea jugador (por si acaso)
+        
         if (playerController != null)
             playerController.enabled = false;
 
         dialoguePanel.SetActive(true);
 
-        // 🎬 Quitar negro al empezar el diálogo (con tiempo real)
+        
         if (blackFade != null)
             StartCoroutine(FadeBlack(1f, 0f, fadeDuration));
 
@@ -110,7 +110,7 @@ public class DialogueManager : MonoBehaviour
         foreach (char c in text)
         {
             bodyText.text += c;
-            // ✅ Usa tiempo real para funcionar aunque Time.timeScale = 0
+            
             yield return new WaitForSecondsRealtime(charDelay);
         }
 
@@ -154,23 +154,23 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator EndSequence()
     {
-        // 🎬 Fundido a negro (tiempo real)
+        
         if (blackFade != null)
             yield return StartCoroutine(FadeBlack(0f, 1f, fadeDuration));
 
-        // Cierra panel
+        
         dialoguePanel.SetActive(false);
         bodyText.text = "";
         nameText.text = "";
         portraitImage.sprite = null;
 
-        // 🚀 Reanudar juego
+        
         Time.timeScale = 1f;
 
         if (playerController != null)
             playerController.enabled = true;
 
-        // 🎬 Quitar negro para arrancar gameplay
+        
         if (blackFade != null)
             yield return StartCoroutine(FadeBlack(1f, 0f, fadeDuration));
     }
@@ -182,7 +182,7 @@ public class DialogueManager : MonoBehaviour
         blackFade.alpha = from;
         float t = 0f;
 
-        // Mientras está negro, bloquea clicks (opcional)
+        
         blackFade.blocksRaycasts = true;
         blackFade.interactable = true;
 
@@ -195,7 +195,7 @@ public class DialogueManager : MonoBehaviour
 
         blackFade.alpha = to;
 
-        // Si ya no hay negro, deja pasar inputs/clicks (opcional)
+        
         if (Mathf.Approximately(to, 0f))
         {
             blackFade.blocksRaycasts = false;

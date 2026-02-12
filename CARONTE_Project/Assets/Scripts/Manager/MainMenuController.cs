@@ -3,7 +3,7 @@
 public class MainMenuController : MonoBehaviour
 {
     [Header("Scene Names (must match exactly)")]
-    [SerializeField] private string introDialogueSceneName = "IntroDialogue"; // ⬅️ NUEVO
+    [SerializeField] private string introDialogueSceneName = "IntroDialogue"; 
     [SerializeField] private string gameSceneName = "CARONTE_Scene";
     [SerializeField] private string extrasSceneName = "Extras";
     [SerializeField] private string mainMenuSceneName = "Main Menu";
@@ -17,7 +17,7 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayGame()
     {
-        // ⬇️ AHORA VA A LA ESCENA DE DIÁLOGO
+        
         SceneFader.Instance.FadeToScene(introDialogueSceneName, playFadeOut, playFadeIn);
     }
 

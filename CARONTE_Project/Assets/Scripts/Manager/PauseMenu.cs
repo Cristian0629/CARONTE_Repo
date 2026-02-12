@@ -48,7 +48,6 @@ public class PauseMenu : MonoBehaviour
         isPaused = true;
         if (pausePanel != null) pausePanel.SetActive(true);
 
-        // ✅ Música se pausa
         if (controlMusic && SceneMusicSwitcher.Instance != null)
             SceneMusicSwitcher.Instance.PauseMusic();
 
@@ -67,7 +66,7 @@ public class PauseMenu : MonoBehaviour
     {
         isPaused = false;
 
-        // ✅ Música vuelve lenta 2s -> normal (independiente del slowmo del juego)
+        
         if (controlMusic && SceneMusicSwitcher.Instance != null)
             SceneMusicSwitcher.Instance.ResumeMusicWithRamp();
 
@@ -114,7 +113,7 @@ public class PauseMenu : MonoBehaviour
 
         if (pausePanel != null) pausePanel.SetActive(false);
 
-        // ✅ Por si te vas al menú, evita que la música quede rara
+        
         if (controlMusic && SceneMusicSwitcher.Instance != null)
             SceneMusicSwitcher.Instance.PauseMusic();
 

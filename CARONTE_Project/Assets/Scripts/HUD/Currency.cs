@@ -48,7 +48,7 @@ public class Currency : MonoBehaviour
     }
 
 
-    // ✅ NUEVO: gastar monedas (para +1 Life)
+    
     public bool TrySpendCoins(int amount)
     {
         if (amount <= 0) return true;

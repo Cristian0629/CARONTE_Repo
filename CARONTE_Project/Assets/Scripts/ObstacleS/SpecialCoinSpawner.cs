@@ -20,11 +20,11 @@ public class SpecialCoinSpawner : MonoBehaviour
     {
         if (specialCoinPrefab == null) return;
 
-        // Si ya has ganado, no spawnear más
+        
         if (Currency.Instance != null && Currency.Instance.SpecialCoins >= 25)
             return;
 
-        // Limitar cuántas hay a la vez
+        
         if (maxOnScreen > 0 && CountSpecialCoinsInScene() >= maxOnScreen)
             return;
 

@@ -35,14 +35,14 @@ public class SceneMusicSwitcher : MonoBehaviour
     private Coroutine pitchRoutine;
     private int pitchToken;
 
-    // ✅ recuerda el volumen real de la escena (para restaurarlo al reanudar)
+    
     private float lastSetVolume = 1f;
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
 
-        // ✅ Singleton
+        
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -59,7 +59,7 @@ public class SceneMusicSwitcher : MonoBehaviour
         audioSource.loop = true;
         audioSource.pitch = 1f;
 
-        // Solo valor inicial por si aún no has llamado a Play()
+        
         lastSetVolume = Mathf.Clamp01(audioSource.volume);
     }
 
@@ -85,14 +85,14 @@ public class SceneMusicSwitcher : MonoBehaviour
 
     private void ApplyMusicForScene(string sceneName)
     {
-        // Ignorar escenas
+        
         for (int i = 0; i < ignoreScenes.Length; i++)
         {
             if (string.Equals(ignoreScenes[i], sceneName, StringComparison.OrdinalIgnoreCase))
                 return;
         }
 
-        // Buscar música asignada para esa escena
+        
         for (int i = 0; i < sceneMusics.Length; i++)
         {
             if (string.Equals(sceneMusics[i].sceneName, sceneName, StringComparison.OrdinalIgnoreCase))
@@ -102,7 +102,7 @@ public class SceneMusicSwitcher : MonoBehaviour
             }
         }
 
-        // Fallback
+        
         Play(defaultMusic, defaultVolume);
     }
 
@@ -110,18 +110,18 @@ public class SceneMusicSwitcher : MonoBehaviour
     {
         if (clip == null) return;
 
-        // ✅ si venías de pausa con pitch lento, resetea
+        
         ResetPitchImmediate();
 
-        // ✅ guarda volumen “real” de esta escena
+        
         lastSetVolume = Mathf.Clamp01(vol);
 
-        // Si ya está sonando ese clip, solo ajusta volumen
+        
         if (audioSource.clip == clip)
         {
             audioSource.volume = lastSetVolume;
 
-            // ✅ si estaba pausada/parada, asegúrate de que suena
+            
             audioSource.UnPause();
             if (!audioSource.isPlaying) audioSource.Play();
 
@@ -134,9 +134,6 @@ public class SceneMusicSwitcher : MonoBehaviour
         audioSource.Play();
     }
 
-    // =========================================================
-    // ✅ Control desde Pause/Resume/Death (con corte inmediato)
-    // =========================================================
 
     public void PauseMusic()
     {
@@ -145,13 +142,13 @@ public class SceneMusicSwitcher : MonoBehaviour
         pitchToken++;
         if (pitchRoutine != null) StopCoroutine(pitchRoutine);
 
-        // ✅ CORTE INMEDIATO
+       
         audioSource.volume = 0f;
 
         if (audioSource.isPlaying)
             audioSource.Pause();
         else
-            audioSource.Pause(); // por si está en un estado raro, lo dejamos pausado igualmente
+            audioSource.Pause(); 
     }
 
     public void ResumeMusicWithRamp()
@@ -167,15 +164,15 @@ public class SceneMusicSwitcher : MonoBehaviour
         pitchToken++;
         if (pitchRoutine != null) StopCoroutine(pitchRoutine);
 
-        // ✅ restaura volumen real de la escena
+        
         audioSource.volume = Mathf.Clamp01(lastSetVolume);
 
-        // ✅ CLAVE: si estaba STOP (GameOver), UnPause no hace nada -> forzamos Play si no suena
+        
         audioSource.UnPause();
         if (!audioSource.isPlaying)
             audioSource.Play();
 
-        // empieza lento y sube a normal
+        
         audioSource.pitch = Mathf.Max(0.05f, startPitch);
         pitchRoutine = StartCoroutine(PitchRampRoutine(pitchToken, rampSeconds));
     }
@@ -212,7 +209,7 @@ public class SceneMusicSwitcher : MonoBehaviour
         pitchToken++;
         if (pitchRoutine != null) StopCoroutine(pitchRoutine);
 
-        // ✅ CORTE INMEDIATO
+        
         audioSource.volume = 0f;
 
         audioSource.pitch = 1f;

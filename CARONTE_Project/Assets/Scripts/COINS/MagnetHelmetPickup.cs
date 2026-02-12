@@ -29,7 +29,7 @@ public class MagnetHelmetPickup : MonoBehaviour
         public int token;
     }
 
-    // Runner que vive en el Player (para que el aura se apague aunque destruyamos el pickup)
+  
     private class AuraRunner : MonoBehaviour
     {
         public void Play(GameObject auraPrefab, string auraChildName, float duration, int auraOrderOffset)
@@ -139,7 +139,6 @@ public class MagnetHelmetPickup : MonoBehaviour
         }
     }
 
-    // Runner de audio en el Player (loop mientras dura el imán)
     private class MagnetAudioRunner : MonoBehaviour
     {
         private AudioSource src;
@@ -165,11 +164,11 @@ public class MagnetHelmetPickup : MonoBehaviour
             src.volume = Mathf.Clamp01(volume);
             src.loop = true;
 
-            // ✅ NUEVO: empezar “dentro” del clip para que suene antes
+            
             float offset = Mathf.Max(0f, startOffsetSeconds);
             if (clip.length > 0.02f && offset > 0f)
             {
-                // deja un pequeño margen para que no caiga justo al final
+                
                 float maxSafe = Mathf.Max(0f, clip.length - 0.02f);
                 src.time = Mathf.Min(offset, maxSafe);
             }
@@ -225,19 +224,19 @@ public class MagnetHelmetPickup : MonoBehaviour
 
         collected = true;
 
-        // 1) Activar el imán
+        
         var wave = other.GetComponent<PlayerWaveRide>();
         if (wave != null)
             wave.ActivateMagnet(magnetDuration);
 
         other.SendMessage("ActivateMagnet", magnetDuration, SendMessageOptions.DontRequireReceiver);
 
-        // 2) Aura visual
+        
         var runner = other.GetComponent<AuraRunner>();
         if (runner == null) runner = other.gameObject.AddComponent<AuraRunner>();
         runner.Play(auraPrefab, auraChildName, magnetDuration, auraOrderOffset);
 
-        // 3) Audio loop mientras dura el imán (arranca antes con offset)
+        
         if (magnetLoopSfx != null)
         {
             var audioRunner = other.GetComponent<MagnetAudioRunner>();
@@ -245,7 +244,7 @@ public class MagnetHelmetPickup : MonoBehaviour
             audioRunner.PlayLoop(magnetLoopSfx, magnetLoopVolume, magnetDuration, magnetLoopStartOffset);
         }
 
-        // desaparecer al instante
+       
         var col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 

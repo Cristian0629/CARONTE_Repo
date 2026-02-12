@@ -15,10 +15,10 @@ public class ObstacleMover : MonoBehaviour
     {
         if (GameSpeed_BG.Instance == null) return;
 
-        float diff = GameSpeed_BG.Instance.Difficulty01; // 0 → 1
+        float diff = GameSpeed_BG.Instance.Difficulty01; 
         float bgSpeed = GameSpeed_BG.Instance.CurrentSpeed;
 
-        // Interpolamos multiplicador según dificultad
+        
         float multiplier = Mathf.Lerp(startSpeedMultiplier, maxSpeedMultiplier, diff);
 
         float finalSpeed = bgSpeed * multiplier + extraSpeed;

@@ -66,7 +66,7 @@ public class DialogueIntro : MonoBehaviour
 
     private float lastSfxTimeUnscaled = -999f;
 
-    // ✅ AudioSource SOLO para SFX (no toca la música)
+    
     private AudioSource talkSfxSource;
     private Coroutine cutSfxRoutine;
     private int cutToken;
@@ -115,7 +115,7 @@ public class DialogueIntro : MonoBehaviour
             fadeCanvasGroup.blocksRaycasts = false;
         }
 
-        // ✅ Crea un AudioSource exclusivo para los bips
+        
         talkSfxSource = gameObject.AddComponent<AudioSource>();
         talkSfxSource.playOnAwake = false;
         talkSfxSource.loop = false;
@@ -246,7 +246,7 @@ public class DialogueIntro : MonoBehaviour
             lastSfxTimeUnscaled = now;
         }
 
-        // ✅ Pitch diferente según el personaje que habla
+        
         Vector2 range = (currentSpeaker == Speaker.Caronte) ? carontePitchRange : protaPitchRange;
 
         float minP = Mathf.Min(range.x, range.y);

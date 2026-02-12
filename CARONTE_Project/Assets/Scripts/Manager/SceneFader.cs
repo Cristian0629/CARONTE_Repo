@@ -25,7 +25,7 @@ public class SceneFader : MonoBehaviour
     private bool didMainMenuStartupFade = false;
     private Coroutine currentRoutine;
 
-    // (-1 = usar defaultFadeIn)
+    
     private float nextSceneFadeInTime = -1f;
 
     private void Awake()
@@ -52,17 +52,17 @@ public class SceneFader : MonoBehaviour
     {
         if (currentRoutine != null) StopCoroutine(currentRoutine);
 
-        // por si vienes de pausas
+        
         Time.timeScale = 1f;
 
-        // empezar tapando
+        
         if (canvasGroup != null)
         {
             canvasGroup.alpha = 1f;
             canvasGroup.blocksRaycasts = true;
         }
 
-        // 1) Fade lento SOLO al iniciar por primera vez en el main menu
+        
         if (doMainMenuStartupFade && !didMainMenuStartupFade && scene.name == mainMenuSceneName)
         {
             didMainMenuStartupFade = true;
@@ -70,19 +70,19 @@ public class SceneFader : MonoBehaviour
             return;
         }
 
-        // 2) ✅ Si venimos con FadeToScene, usamos ese fade-in y NO hacemos Hold.
+        
         float fadeInToUse = (nextSceneFadeInTime > 0f) ? nextSceneFadeInTime : defaultFadeIn;
         bool cameFromFadeToScene = (nextSceneFadeInTime > 0f);
         nextSceneFadeInTime = -1f;
 
-        // 3) Hold SOLO si es gameplay y NO venimos de FadeToScene
+        
         if (holdBlackUntilAnyInput && scene.name == gameplaySceneName && !cameFromFadeToScene)
         {
             currentRoutine = StartCoroutine(HoldBlackThenFadeIn(fadeInToUse));
             return;
         }
 
-        // 4) Resto: fade normal
+        
         currentRoutine = StartCoroutine(FadeIn(fadeInToUse));
     }
 
@@ -135,7 +135,7 @@ public class SceneFader : MonoBehaviour
     {
         yield return StartCoroutine(FadeOut(fadeOutTime));
 
-        // guardamos el fade-in para la siguiente escena
+        
         nextSceneFadeInTime = fadeInTime;
 
         SceneManager.LoadScene(sceneName);

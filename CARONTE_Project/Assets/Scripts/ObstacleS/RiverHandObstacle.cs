@@ -60,7 +60,7 @@ public class RiverHandObstacle : MonoBehaviour
         transform.position = new Vector3(transform.position.x, y, transform.position.z);
     }
 
-    // ✅ Igual que los otros obstáculos
+    
     void OnTriggerEnter2D(Collider2D other)
     {
         TryKill(other.gameObject);

@@ -21,7 +21,7 @@ public class UIHUD : MonoBehaviour
     private float startX;
     private float metersAccum;
 
-    // ✅ valor actual de metros (para GameOver)
+    
     public float CurrentMeters { get; private set; }
 
     void Awake()
@@ -34,7 +34,7 @@ public class UIHUD : MonoBehaviour
         if (player != null)
             startX = player.position.x;
 
-        // ✅ En vez de poner 0, sincroniza con Currency si existe
+        
         UpdateCurrencyUIFromCurrency();
     }
 
@@ -42,7 +42,7 @@ public class UIHUD : MonoBehaviour
     {
         UpdateMeters();
 
-        // ✅ NUEVO: sincroniza monedas normales y especiales desde Currency (source of truth)
+        
         UpdateCurrencyUIFromCurrency();
     }
 
@@ -69,7 +69,7 @@ public class UIHUD : MonoBehaviour
             metersText.text = $"{meters:0} m";
     }
 
-    // ✅ NUEVO: siempre muestra lo que realmente hay en Currency
+    
     private void UpdateCurrencyUIFromCurrency()
     {
         if (Currency.Instance == null) return;
@@ -81,7 +81,7 @@ public class UIHUD : MonoBehaviour
             specialCoinsText.text = Currency.Instance.SpecialCoins.ToString();
     }
 
-    // Lo dejamos por compatibilidad (si otros scripts lo llaman, seguirá funcionando)
+    
     public void Refresh(int coins, int specialCoins)
     {
         if (coinsText != null) coinsText.text = coins.ToString();

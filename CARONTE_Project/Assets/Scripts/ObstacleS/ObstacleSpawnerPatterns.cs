@@ -15,8 +15,8 @@ public class ObstacleSpawnerPatterns : MonoBehaviour
     public float bottomPadding = 0.8f;
 
     [Header("Resume settings")]
-    public float resumeDelay = 2f;          // espera antes de volver a spawnear
-    public string obstacleTag = "Obstacle"; // tag de tus obstáculos en escena
+    public float resumeDelay = 2f;          
+    public string obstacleTag = "Obstacle"; 
 
     float nextSpawn;
     bool spawningEnabled = true;
@@ -61,30 +61,26 @@ public class ObstacleSpawnerPatterns : MonoBehaviour
         Instantiate(obstaclePrefabs[idx], new Vector3(spawnX, y, 0f), Quaternion.identity);
     }
 
-    // =========================
-    //  LLAMAR DESDE TU MANAGER
-    // =========================
-
-    /// Llamar cuando el jugador muere
+    
     public void StopSpawningAndClear()
     {
         spawningEnabled = false;
 
-        // Cancela posibles reanudaciones anteriores
+        
         if (resumeRoutine != null)
         {
             StopCoroutine(resumeRoutine);
             resumeRoutine = null;
         }
 
-        // Destruye obstáculos actuales
+        
         ClearObstacles();
     }
 
-    /// Llamar cuando pulsa "+1 Life"
+    
     public void ResumeSpawningWithDelay()
     {
-        // Cancela si había otra coroutine
+        
         if (resumeRoutine != null) StopCoroutine(resumeRoutine);
         resumeRoutine = StartCoroutine(ResumeRoutine());
     }
@@ -93,10 +89,10 @@ public class ObstacleSpawnerPatterns : MonoBehaviour
     {
         spawningEnabled = false;
 
-        // Espera REAL aunque timeScale esté a 0 (muy importante)
+        
         yield return new WaitForSecondsRealtime(resumeDelay);
 
-        // Resetea timer para que empiecen "limpios"
+        
         ScheduleNext();
 
         spawningEnabled = true;
@@ -105,7 +101,7 @@ public class ObstacleSpawnerPatterns : MonoBehaviour
 
     void ClearObstacles()
     {
-        // IMPORTANTE: Pon el tag "Obstacle" a todos tus prefabs de obstáculos
+        
         GameObject[] obs = GameObject.FindGameObjectsWithTag(obstacleTag);
         for (int i = 0; i < obs.Length; i++)
             Destroy(obs[i]);

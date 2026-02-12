@@ -4,7 +4,7 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerWaveRide : MonoBehaviour
 {
-    // ✅ NUEVO: singleton simple para que las monedas puedan encontrar al player
+    
     public static PlayerWaveRide Instance { get; private set; }
 
     [Header("References")]
@@ -41,7 +41,7 @@ public class PlayerWaveRide : MonoBehaviour
     public float reEngageKickRate = 55f;
     public float reEngageKickTime = 0.14f;
 
-    // ✅ NUEVO: Magnet config
+    
     [Header("Magnet PowerUp")]
     [SerializeField] private float magnetRadius = 3.5f;
     [SerializeField] private float magnetPullSpeed = 18f;
@@ -52,7 +52,7 @@ public class PlayerWaveRide : MonoBehaviour
 
     private Coroutine magnetRoutine;
 
-    // ✅ NUEVO: Feedback al coger monedas (flash)
+    
     [Header("Coin Pickup Feedback (Flash)")]
     [Tooltip("Si lo dejas vacío, se auto-detectan SpriteRenderers en el player y sus hijos.")]
     [SerializeField] private SpriteRenderer[] flashRenderers;
@@ -87,7 +87,7 @@ public class PlayerWaveRide : MonoBehaviour
         rb.gravityScale = gravityScale;
         rb.linearDamping = 0f;
 
-        // ✅ NUEVO: preparar renderers del flash
+        
         if (flashRenderers == null || flashRenderers.Length == 0)
             flashRenderers = GetComponentsInChildren<SpriteRenderer>(true);
 
@@ -99,7 +99,7 @@ public class PlayerWaveRide : MonoBehaviour
         }
     }
 
-    // ✅ NUEVO: LLAMAR desde las monedas cuando se recogen
+    
     public void OnCoinCollected()
     {
         TriggerFlash();
@@ -121,19 +121,19 @@ public class PlayerWaveRide : MonoBehaviour
         float half = flashDuration * 0.5f;
         if (half <= 0f) yield break;
 
-        // subir (base -> flash)
+        
         float t = 0f;
         while (t < half)
         {
             if (token != flashToken) yield break;
 
-            t += Time.unscaledDeltaTime; // consistente aunque haya slowmo
+            t += Time.unscaledDeltaTime; 
             float p = Mathf.Clamp01(t / half);
             ApplyFlash(p);
             yield return null;
         }
 
-        // bajar (flash -> base)
+        
         t = 0f;
         while (t < half)
         {
@@ -159,7 +159,7 @@ public class PlayerWaveRide : MonoBehaviour
             if (sr == null) continue;
 
             Color baseC = baseColors[i];
-            // Mezcla hacia blanco (o el color que elijas) para “iluminar”
+            
             sr.color = Color.Lerp(baseC, flashColor, a);
         }
     }
@@ -174,7 +174,7 @@ public class PlayerWaveRide : MonoBehaviour
         }
     }
 
-    // ✅ NUEVO: activar imán X segundos (reinicia si lo pillas otra vez)
+    
     public void ActivateMagnet(float durationSeconds)
     {
         if (magnetRoutine != null) StopCoroutine(magnetRoutine);
@@ -279,7 +279,7 @@ public class PlayerWaveRide : MonoBehaviour
         if (groundCheck == null) return;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
 
-        // ✅ NUEVO: gizmo del imán (solo para ver el radio)
+        
         Gizmos.DrawWireSphere(transform.position, magnetRadius);
     }
 }

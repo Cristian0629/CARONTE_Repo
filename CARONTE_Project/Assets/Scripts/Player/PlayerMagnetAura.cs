@@ -13,7 +13,7 @@ public class PlayerMagnetAura : MonoBehaviour
             currentAura = Instantiate(auraPrefab, transform);
             currentAura.transform.localPosition = Vector3.zero;
 
-            // 🔥 Forzar que se vea por encima del player
+            
             var sg = currentAura.GetComponent<SortingGroup>();
             if (sg == null) sg = currentAura.AddComponent<SortingGroup>();
 

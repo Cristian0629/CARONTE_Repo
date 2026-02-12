@@ -46,10 +46,10 @@ public class CoinPickup : MonoBehaviour
                 Currency.Instance.AddCoins(value);
         }
 
-        // ✅ Flash del jugador
+        
         PlayerWaveRide.Instance?.OnCoinCollected();
 
-        // ✅ NUEVO: sonido SOLO para monedas normales
+        
         if (!isSpecialCoin && coinSfx != null)
         {
             AudioSource.PlayClipAtPoint(coinSfx, transform.position, coinSfxVolume);

@@ -22,7 +22,7 @@ public class SpecialCoinPickup : MonoBehaviour
         Currency.Instance?.AddSpecialCoins(1);
         Debug.Log("[SpecialCoinPickup] Added 1 to Currency.SpecialCoins");
 
-        // ✅ SFX al recoger
+        
         if (specialCoinSfx != null)
             AudioSource.PlayClipAtPoint(specialCoinSfx, transform.position, specialCoinSfxVolume);
 

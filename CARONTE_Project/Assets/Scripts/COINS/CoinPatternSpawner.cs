@@ -26,7 +26,7 @@ public class CoinPatternSpawner : MonoBehaviour
 
     float timer;
     int lastIndex = -1;
-    GameObject currentPattern; // <- el patrón activo
+    GameObject currentPattern; 
 
     void Start() => ResetTimer();
 
@@ -34,7 +34,7 @@ public class CoinPatternSpawner : MonoBehaviour
     {
         
 
-        // Si ya hay un patrón activo, no generes otro
+        
         if (onlyOnePatternOnScreen && currentPattern != null)
             return;
 
@@ -66,7 +66,7 @@ public class CoinPatternSpawner : MonoBehaviour
 
         GameObject patternObj = Instantiate(prefab, new Vector3(spawnX, y, 0f), Quaternion.identity);
 
-        // Guardamos referencia para bloquear spawns
+        
         currentPattern = patternObj;
 
         var mover = patternObj.GetComponent<CoinPatternMover>();

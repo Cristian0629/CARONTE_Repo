@@ -76,13 +76,13 @@ public class SpecialCoinManager : MonoBehaviour
     {
         endingSequenceStarted = true;
 
-        // ✅ Por si el usuario tenía el tiempo tocado por otra cosa
+        
         float startScale = Time.timeScale;
 
-        // ✅ Empieza el FADE INMEDIATO (mientras hacemos slow motion)
+        
         if (SceneFader.Instance != null)
         {
-            // Asegura que el fade-out dure lo que tú quieres (y sea visible)
+            
             SceneFader.Instance.FadeToScene(finalSceneName, fadeOutTime, fadeInTime);
         }
         else
@@ -90,8 +90,7 @@ public class SpecialCoinManager : MonoBehaviour
             Debug.LogWarning("⚠️ SceneFader.Instance no encontrado. Cargando FinalDialogue sin fade.");
         }
 
-        // ✅ Empieza el SLOW INMEDIATO (sin fixedDeltaTime para evitar sensación rara)
-        // Pequeño “tirón” inicial para que se note al instante:
+        
         Time.timeScale = Mathf.Lerp(startScale, minTimeScale, 0.15f);
 
         float duration = Mathf.Max(0.01f, finalSequenceDuration);
@@ -102,8 +101,8 @@ public class SpecialCoinManager : MonoBehaviour
             t += Time.unscaledDeltaTime;
             float p = Mathf.Clamp01(t / duration);
 
-            // Suaviza mucho la sensación (0->1 suave)
-            float smooth = p * p * (3f - 2f * p); // SmoothStep
+            
+            float smooth = p * p * (3f - 2f * p); 
 
             Time.timeScale = Mathf.Lerp(startScale, minTimeScale, smooth);
             yield return null;
@@ -111,7 +110,7 @@ public class SpecialCoinManager : MonoBehaviour
 
         Time.timeScale = minTimeScale;
 
-        // Si por algún motivo no hay SceneFader, hacemos fallback con un delay y cambiamos escena
+        
         if (SceneFader.Instance == null)
         {
             yield return new WaitForSecondsRealtime(fadeOutTime);
@@ -119,8 +118,7 @@ public class SpecialCoinManager : MonoBehaviour
             SceneManager.LoadScene(finalSceneName);
         }
 
-        // Importante: NO restauramos aquí el timeScale si usamos SceneFader,
-        // porque al cargar escena tu SceneFader ya hace Time.timeScale = 1f en OnSceneLoaded.
+        
     }
 
     void ForceHUD()

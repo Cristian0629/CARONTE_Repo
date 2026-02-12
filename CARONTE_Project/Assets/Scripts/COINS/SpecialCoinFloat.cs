@@ -22,7 +22,7 @@ public class SpecialCoinFloat : MonoBehaviour
         if (timer <= 0f)
             PickNewTarget();
 
-        // Parámetros por fases
+        
         int sc = (Currency.Instance != null) ? Currency.Instance.SpecialCoins : 0;
 
         float amplitude;
@@ -52,7 +52,7 @@ public class SpecialCoinFloat : MonoBehaviour
         y = Mathf.Clamp(y, minY, maxY);
         transform.position = new Vector3(transform.position.x, y, transform.position.z);
 
-        // Guardamos parámetros actuales para el siguiente target
+        
         _amplitude = amplitude;
         _tMin = tMin;
         _tMax = tMax;
