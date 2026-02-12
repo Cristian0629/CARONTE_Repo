@@ -52,6 +52,25 @@ public class PlayerWaveRide : MonoBehaviour
 
     private Coroutine magnetRoutine;
 
+    // ✅ NUEVO: Feedback al coger monedas (flash)
+    [Header("Coin Pickup Feedback (Flash)")]
+    [Tooltip("Si lo dejas vacío, se auto-detectan SpriteRenderers en el player y sus hijos.")]
+    [SerializeField] private SpriteRenderer[] flashRenderers;
+
+    [Tooltip("Color del flash (blanco = ilumina).")]
+    [SerializeField] private Color flashColor = Color.white;
+
+    [Tooltip("Intensidad del flash (0 = nada, 1 = fuerte).")]
+    [Range(0f, 1f)]
+    [SerializeField] private float flashStrength = 0.35f;
+
+    [Tooltip("Duración total del flash (segundos).")]
+    [SerializeField] private float flashDuration = 0.10f;
+
+    private Color[] baseColors;
+    private Coroutine flashRoutine;
+    private int flashToken;
+
     private Rigidbody2D rb;
     private bool wasHolding;
     private float takeoffTimer;
@@ -67,6 +86,92 @@ public class PlayerWaveRide : MonoBehaviour
         rb.freezeRotation = true;
         rb.gravityScale = gravityScale;
         rb.linearDamping = 0f;
+
+        // ✅ NUEVO: preparar renderers del flash
+        if (flashRenderers == null || flashRenderers.Length == 0)
+            flashRenderers = GetComponentsInChildren<SpriteRenderer>(true);
+
+        if (flashRenderers != null && flashRenderers.Length > 0)
+        {
+            baseColors = new Color[flashRenderers.Length];
+            for (int i = 0; i < flashRenderers.Length; i++)
+                baseColors[i] = (flashRenderers[i] != null) ? flashRenderers[i].color : Color.white;
+        }
+    }
+
+    // ✅ NUEVO: LLAMAR desde las monedas cuando se recogen
+    public void OnCoinCollected()
+    {
+        TriggerFlash();
+    }
+
+    private void TriggerFlash()
+    {
+        if (flashRenderers == null || flashRenderers.Length == 0) return;
+        if (baseColors == null || baseColors.Length != flashRenderers.Length) return;
+        if (flashDuration <= 0f || flashStrength <= 0f) return;
+
+        flashToken++;
+        if (flashRoutine != null) StopCoroutine(flashRoutine);
+        flashRoutine = StartCoroutine(FlashRoutine(flashToken));
+    }
+
+    private IEnumerator FlashRoutine(int token)
+    {
+        float half = flashDuration * 0.5f;
+        if (half <= 0f) yield break;
+
+        // subir (base -> flash)
+        float t = 0f;
+        while (t < half)
+        {
+            if (token != flashToken) yield break;
+
+            t += Time.unscaledDeltaTime; // consistente aunque haya slowmo
+            float p = Mathf.Clamp01(t / half);
+            ApplyFlash(p);
+            yield return null;
+        }
+
+        // bajar (flash -> base)
+        t = 0f;
+        while (t < half)
+        {
+            if (token != flashToken) yield break;
+
+            t += Time.unscaledDeltaTime;
+            float p = Mathf.Clamp01(t / half);
+            ApplyFlash(1f - p);
+            yield return null;
+        }
+
+        RestoreBaseColors();
+        flashRoutine = null;
+    }
+
+    private void ApplyFlash(float amount01)
+    {
+        float a = Mathf.Clamp01(amount01) * flashStrength;
+
+        for (int i = 0; i < flashRenderers.Length; i++)
+        {
+            var sr = flashRenderers[i];
+            if (sr == null) continue;
+
+            Color baseC = baseColors[i];
+            // Mezcla hacia blanco (o el color que elijas) para “iluminar”
+            sr.color = Color.Lerp(baseC, flashColor, a);
+        }
+    }
+
+    private void RestoreBaseColors()
+    {
+        for (int i = 0; i < flashRenderers.Length; i++)
+        {
+            var sr = flashRenderers[i];
+            if (sr == null) continue;
+            sr.color = baseColors[i];
+        }
     }
 
     // ✅ NUEVO: activar imán X segundos (reinicia si lo pillas otra vez)

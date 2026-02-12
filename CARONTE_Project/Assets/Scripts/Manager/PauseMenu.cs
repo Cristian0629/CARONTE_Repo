@@ -12,6 +12,9 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private float slowMoDurationRealtime = 3f;
     [SerializeField] private string mainMenuSceneName = "Main Menu";
 
+    [Header("Music (Resume ramp)")]
+    [SerializeField] private bool controlMusic = true;
+
     private bool isPaused = false;
     private Coroutine resumeRoutine;
 
@@ -24,7 +27,6 @@ public class PauseMenu : MonoBehaviour
 
     private void Update()
     {
-        
         if (GameOverManager.Instance != null && GameOverManager.Instance.IsGameOverShown)
             return;
 
@@ -46,6 +48,10 @@ public class PauseMenu : MonoBehaviour
         isPaused = true;
         if (pausePanel != null) pausePanel.SetActive(true);
 
+        // ✅ Música se pausa
+        if (controlMusic && SceneMusicSwitcher.Instance != null)
+            SceneMusicSwitcher.Instance.PauseMusic();
+
         Time.timeScale = 0f;
     }
 
@@ -60,6 +66,10 @@ public class PauseMenu : MonoBehaviour
     private IEnumerator ResumeSequence()
     {
         isPaused = false;
+
+        // ✅ Música vuelve lenta 2s -> normal (independiente del slowmo del juego)
+        if (controlMusic && SceneMusicSwitcher.Instance != null)
+            SceneMusicSwitcher.Instance.ResumeMusicWithRamp();
 
         float startScale = slowMoScale;
         float endScale = 1f;
@@ -104,13 +114,16 @@ public class PauseMenu : MonoBehaviour
 
         if (pausePanel != null) pausePanel.SetActive(false);
 
+        // ✅ Por si te vas al menú, evita que la música quede rara
+        if (controlMusic && SceneMusicSwitcher.Instance != null)
+            SceneMusicSwitcher.Instance.PauseMusic();
+
         if (SceneFader.Instance != null)
             SceneFader.Instance.FadeToScene(mainMenuSceneName, 1.0f, 0.5f);
         else
             SceneManager.LoadScene(mainMenuSceneName);
     }
 
-    
     public void ForceClose()
     {
         if (resumeRoutine != null)

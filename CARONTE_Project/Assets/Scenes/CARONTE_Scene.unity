@@ -2511,6 +2511,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameOverManager
   gameOverGroup: {fileID: 1021388631}
+  deathSfx: {fileID: 8300000, guid: c658419cecf58d140b08ef985a10994c, type: 3}
+  deathSfxVolume: 0.85
   metersResultText: {fileID: 1980616051}
   coinsResultText: {fileID: 657742279}
   specialCoinsResultText: {fileID: 1064896768}
@@ -2525,6 +2527,9 @@ MonoBehaviour:
   clearRadius: 10
   slowDownAmount: 2
   difficultyBackSeconds: 20
+  doReviveSlowMo: 1
+  reviveSlowMoScale: 0.25
+  reviveSlowMoDurationRealtime: 3
   mainMenuSceneName: Main Menu
   debugLogs: 0
 --- !u!114 &628528369
@@ -2543,6 +2548,7 @@ MonoBehaviour:
   slowMoScale: 0.25
   slowMoDurationRealtime: 3
   mainMenuSceneName: Main Menu
+  controlMusic: 1
 --- !u!114 &628528370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11416,6 +11422,10 @@ MonoBehaviour:
   reEngageKickTime: 0.16
   magnetRadius: 4.2
   magnetPullSpeed: 18
+  flashRenderers: []
+  flashColor: {r: 0.88329846, g: 1, b: 0.21226418, a: 1}
+  flashStrength: 1
+  flashDuration: 0.5
 --- !u!61 &1500522402
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13527,8 +13537,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4290651517
-  m_fontColor: {r: 0.4904141, g: 0.14413491, b: 0.745283, a: 1}
+    rgba: 4280798673
+  m_fontColor: {r: 0.8207547, g: 0.803731, b: 0.15098791, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

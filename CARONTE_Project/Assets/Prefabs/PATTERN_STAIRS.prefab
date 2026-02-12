@@ -133,6 +133,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoinPickup
   value: 1
+  isSpecialCoin: 0
+  coinSfx: {fileID: 8300000, guid: 930b7a61f985f2643a5b6474962db77c, type: 3}
+  coinSfxVolume: 0.8
 --- !u!58 &8074513880284833989
 CircleCollider2D:
   m_ObjectHideFlags: 0

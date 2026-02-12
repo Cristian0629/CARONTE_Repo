@@ -154,11 +154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662008c937db437409447cf688e4d682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpecialCoinFloat
-  amplitude: 0.35
-  frequency: 1.2
-  chasePlayerY: 1
-  playerTag: Player
-  chaseStrength: 2.5
+  minY: -2.2
+  maxY: 2.8
 --- !u!114 &6203304566915272707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16e91db7d4398844786d4deaac8ac052, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpecialCoinPickup
+  specialCoinSfx: {fileID: 8300000, guid: 80411d8592c68f3469eb2a1c4f87cc7c, type: 3}
+  specialCoinSfxVolume: 0.8
 --- !u!114 &7818745134096966777
 MonoBehaviour:
   m_ObjectHideFlags: 0

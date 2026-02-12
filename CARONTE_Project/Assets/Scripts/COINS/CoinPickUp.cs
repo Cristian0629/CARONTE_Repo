@@ -5,6 +5,11 @@ public class CoinPickup : MonoBehaviour
     [SerializeField] private int value = 1;
     [SerializeField] private bool isSpecialCoin = false;
 
+    [Header("Coin SFX")]
+    [SerializeField] private AudioClip coinSfx;
+    [Range(0f, 1f)]
+    [SerializeField] private float coinSfxVolume = 0.4f;
+
     private bool collected = false;
 
     void Update()
@@ -14,7 +19,6 @@ public class CoinPickup : MonoBehaviour
         if (!p.MagnetActive) return;
         if (collected) return;
 
-        // ✅ Target del imán (usa MagnetPoint si existe)
         Vector3 targetPos = (p.MagnetPoint != null) ? p.MagnetPoint.position : p.transform.position;
 
         float dist = Vector2.Distance(transform.position, targetPos);
@@ -36,8 +40,19 @@ public class CoinPickup : MonoBehaviour
 
         if (Currency.Instance != null)
         {
-            if (isSpecialCoin) Currency.Instance.AddSpecialCoins(value);
-            else Currency.Instance.AddCoins(value);
+            if (isSpecialCoin)
+                Currency.Instance.AddSpecialCoins(value);
+            else
+                Currency.Instance.AddCoins(value);
+        }
+
+        // ✅ Flash del jugador
+        PlayerWaveRide.Instance?.OnCoinCollected();
+
+        // ✅ NUEVO: sonido SOLO para monedas normales
+        if (!isSpecialCoin && coinSfx != null)
+        {
+            AudioSource.PlayClipAtPoint(coinSfx, transform.position, coinSfxVolume);
         }
 
         var col = GetComponent<Collider2D>();
