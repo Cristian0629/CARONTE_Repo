@@ -12,6 +12,9 @@ public class PlayerWaveRide : MonoBehaviour
     public LayerMask groundMask;
     public float groundCheckRadius = 0.18f;
 
+    [Header("Magnet Target")]
+    public Transform MagnetPoint;
+
     [Header("Upward feel")]
     public float liftAcceleration = 125f;
     public float maxUpSpeed = 13f;

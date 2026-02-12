@@ -3,26 +3,26 @@
 public class CoinPickup : MonoBehaviour
 {
     [SerializeField] private int value = 1;
-
     [SerializeField] private bool isSpecialCoin = false;
 
     private bool collected = false;
 
     void Update()
     {
-        // ✅ NUEVO: atracción por imán
         var p = PlayerWaveRide.Instance;
         if (p == null) return;
         if (!p.MagnetActive) return;
         if (collected) return;
 
-        float dist = Vector2.Distance(transform.position, p.transform.position);
+        // ✅ Target del imán (usa MagnetPoint si existe)
+        Vector3 targetPos = (p.MagnetPoint != null) ? p.MagnetPoint.position : p.transform.position;
+
+        float dist = Vector2.Distance(transform.position, targetPos);
         if (dist > p.MagnetRadius) return;
 
-        // mover hacia el player
         transform.position = Vector3.MoveTowards(
             transform.position,
-            p.transform.position,
+            targetPos,
             p.MagnetPullSpeed * Time.deltaTime
         );
     }
@@ -36,10 +36,8 @@ public class CoinPickup : MonoBehaviour
 
         if (Currency.Instance != null)
         {
-            if (isSpecialCoin)
-                Currency.Instance.AddSpecialCoins(value);
-            else
-                Currency.Instance.AddCoins(value);
+            if (isSpecialCoin) Currency.Instance.AddSpecialCoins(value);
+            else Currency.Instance.AddCoins(value);
         }
 
         var col = GetComponent<Collider2D>();
